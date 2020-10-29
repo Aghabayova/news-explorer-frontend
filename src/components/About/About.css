@@ -1,0 +1,14 @@
+@import url(./__avatar/about__avatar.css);
+@import url(./__description/about__description.css);
+@import url(./__title/about__title.css);
+@import url(./__paragraph/about__paragraph.css);
+
+.about{
+    max-width: 1440px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    display: flex;
+    color: #1a1b22;
+    flex-direction: row;
+    padding: 80px 0 80px 102px;
+}

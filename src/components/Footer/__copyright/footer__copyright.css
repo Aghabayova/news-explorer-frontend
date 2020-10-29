@@ -1,0 +1,12 @@
+.footer__copyright {
+
+    color: #b6bcbf;
+    max-width: 450px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: 22px;
+    padding-top: 4px;
+}

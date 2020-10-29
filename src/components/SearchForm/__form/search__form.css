@@ -1,0 +1,9 @@
+.search__form{
+    display:flex;
+    flex-direction:row;
+    max-width: 608px;
+    background-color: white;
+    border-radius: 100px;
+    
+
+}

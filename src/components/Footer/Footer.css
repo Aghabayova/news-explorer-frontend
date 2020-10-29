@@ -1,0 +1,16 @@
+@import url(./__nav/footer__nav.css);
+@import url(./__nav-links/footer__nav-links.css);
+@import url(./__copyright/footer__copyright.css);
+@import url(./__nav-link/footer__nav-link.css);
+
+
+.footer{
+    display: flex;
+    margin: 0 auto;
+    max-width: 1440;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 12px 105px;
+    background-color: #ffffff;
+    color: #1a1b22;
+}

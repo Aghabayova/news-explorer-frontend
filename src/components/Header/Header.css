@@ -1,0 +1,14 @@
+@import url(__label/header__label.css);
+
+.header {
+    
+    border-bottom: 1px solid rgba(84, 84, 84, .7);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 1440px;
+    padding: 20px 104px 10px 106px;
+    
+
+  }
+  

@@ -1,0 +1,17 @@
+.search__input {
+    flex-grow: 2;
+    border: none;
+    border-radius: 100px;
+    padding: 22px 40px 22px 24px;
+
+}
+
+.search__input:focus {
+    /* removing the input focus blue box. Put this on the form if you like. */
+    outline: none;
+}
+
+.search__input::placeholder {
+    color: #B6BCBF;
+   
+}
