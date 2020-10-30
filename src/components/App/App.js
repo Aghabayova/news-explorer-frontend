@@ -16,7 +16,7 @@ function App() {
     <Header />
     <SearchForm />
     </div>
-    <About/>
+   
     <Switch>
       <Route exact path="/">
         <Main />
@@ -26,6 +26,7 @@ function App() {
       </Route>
       
     </Switch>
+    <About/>
     <Footer />
     </div>
   );

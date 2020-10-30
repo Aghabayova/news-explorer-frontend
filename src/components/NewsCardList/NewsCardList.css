@@ -1,0 +1,50 @@
+.newscards {
+    max-width: 1440px;
+    padding: 51px 104px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.newscards__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(282px, 1fr));
+    row-gap: 16px;
+    column-gap: 16px;
+    justify-content: center;
+    max-width: 1440px;
+}
+
+.newscards__search-title {
+    max-width: 712px;
+    color: #1a1b22;
+    font-family: "Roboto Slab";
+    font-size: 40px;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: 46px;
+    text-align: left;
+    margin-bottom: 62px;
+}
+
+.newscards__more-btn {
+    background: #FFFFFF;
+    border-radius: 80px;
+    width: 288px;
+    height: 100%;
+    margin-top: 64px;
+    border: none;
+    color: #1a1b22;
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 500;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: 24px;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    align-self: center;
+    outline: none;
+}

@@ -1,0 +1,8 @@
+.main {
+    max-width: 1440px;
+    background-color: #f5f6f7;
+    margin: 0 auto;
+    padding: 80px, 104px;
+    display: flex;
+    flex-direction: column;
+}

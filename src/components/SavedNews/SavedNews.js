@@ -2,7 +2,7 @@ import React from 'react';
 function SavedNews() {
 
     return(
-        <div></div>
+        <div>1</div>
     );
 }
 export default SavedNews;
