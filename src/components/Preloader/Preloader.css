@@ -1,12 +1,13 @@
 .preloader {
-    margin: 0 auto;
+    margin: 80px auto 55px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    
   }
   
   .preloader__title {
-    margin-top: 24px;
+    margin-top: 20px;
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;

@@ -1,20 +1,16 @@
 import React from 'react';
+import NotFound from '../../images/NotFound/notfound.png';
+import './NotFoundNews.css';
 function NotFoundNews() {
 
-    return(
-        <section class="not-found">
-        <div class="not-found__container">
-          <img
-            src=""
-            alt="Изображение: Ничего не найдено"
-            class="not-found__icon"
-          />
-          <h2 class="content-title not-found__title">Ничего не найдено</h2>
-          <p class="not-found__text">
-            К сожалению по вашему запросу ничего не найдено.
+    return (
+        <section className="not-found">
+                <img src={NotFound} className="not-found__icon" alt="Изображение: Ничего не найдено"/>
+                <h2 className="not-found__title">Ничего не найдено</h2>
+                <p className="not-found__text">
+                    К сожалению по вашему запросу ничего не найдено.
           </p>
-        </div>
-      </section>
+        </section>
 
     );
 }

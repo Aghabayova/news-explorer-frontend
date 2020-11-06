@@ -14,7 +14,7 @@ function Footer() {
                     <li><NavLink className="footer__nav-link" to='/'>Главная</NavLink></li>
                     <li><a className="footer__nav-link" href="https://praktikum.yandex.ru">Яндекс.Практикум</a></li>
                 </ul>
-                <ul className="footer__nav-links footer__nav-links-social">
+                <ul className="footer__nav-links footer__nav-links_social">
                     <li><a className="footer__nav-link" href="https://github.com/Aghabayova" target="_blank" rel="noreferrer"><img class="footer__social-icon" src={GhIcon} alt="иконка Гитхаб"/></a></li>
                     <li><a className="footer__nav-link" href="https://www.facebook.com" target="_blank" rel="noreferrer"><img class="footer__social-icon" src={FbIcon} alt="иконка Фейсбук"/></a></li>
                 </ul>

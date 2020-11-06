@@ -1,3 +1,7 @@
 .App__helper{
+  
     background-image: url(../../../images/App/header_bckgrnd.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
 }

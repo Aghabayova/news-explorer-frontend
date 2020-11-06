@@ -1,7 +1,16 @@
 .newscard {
     display: flex;
     flex-direction: column;
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+
 }
+
+.newscard:hover {
+    box-shadow: 0 1px 30px 0 rgba(0, 0, 0, .16);
+}
+
 
 .newscard__image {
     width: 100%;
@@ -11,26 +20,50 @@
     background-position: center;
     cursor: pointer;
     background-color: #000;
-    
+
+}
+
+@media screen and (max-width: 1000px) {
+    .newscard__image {
+        height: 150px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .newscard__image {
+        height: 196px;
+    }
 }
 
 .newscard__content {
     color: #1a1b22;
     background-color: #ffffff;
-    border-radius: 0 0 15px 15px;
     height: 258px;
     display: flex;
     flex-direction: column;
     max-width: 100%;
-    padding: 22px 20px 24px;
+    padding: 22px 20px 21px;
     justify-content: space-between;
-    
-   
-   
 }
 
+@media screen and (max-width: 1000px) {
+    .newscard__content {
+        padding: 20px 15px 20px;
+        height: 234px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .newscard__content {
+        padding: 22px 15px 20px;
+        height: 200px;
+        justify-content: initial;
+    }
+}
+
+
 .newscard__date {
-    
+
     color: #b6bcbf;
     font-family: "Source Sans Pro";
     font-size: 18px;
@@ -41,7 +74,7 @@
     text-align: left;
     align-self: left;
     margin: 0;
-    
+
 }
 
 .newscard__title {
@@ -54,12 +87,31 @@
     letter-spacing: normal;
     line-height: 30px;
     margin: 7px 0 19px;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
 
-   
 
+@media screen and (max-width: 1000px) {
+    .newscard__title {
+        font-size: 22px;
+        line-height: 26px;
+        margin: 5px 0 10px;
+        height: auto;
+        -webkit-line-clamp: 3;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .newscard__title {
+        -webkit-line-clamp: 2;
+    }
 }
 
 .newscard__article {
+    display: -webkit-box;
     max-width: 352px;
     color: #1a1b22;
     font-family: Roboto;
@@ -69,9 +121,18 @@
     letter-spacing: normal;
     line-height: 22px;
     margin: 0;
-    
-    
-    
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+}
+
+
+
+@media screen and (max-width: 1000px) {
+    .newscard__article {
+        height: 88px;
+    }
 }
 
 .newscard__link {
@@ -84,5 +145,140 @@
     letter-spacing: 0.4px;
     line-height: 20px;
     text-decoration: none;
-    
+    margin: 0;
+}
+
+@media screen and (max-width: 1000px) {
+    .newscard__link {
+        margin-top: 4px;
+    }
+}
+
+.newscard__save-btn {
+
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    position: absolute;
+    border: none;
+    cursor: pointer;
+    transition: opacity .2s ease-out;
+    padding: 0;
+    outline: 0;
+    z-index: 1;
+    background-color: transparent;
+    background: #FFFFFF;
+    top: 21px;
+    right: 21px;
+    background-image: url(../../images/NewsCard/savebtn.png);
+    background-size: cover;
+}
+
+.newscard__save-btn:hover {
+    transition: opacity 1s ease-in-out;
+    background-image: url(../../images/NewsCard/savebtnhover.svg);
+
+}
+
+@media screen and (max-width: 1000px) {
+    .newscard__save-btn {
+        top: 8px;
+        right: 8px;
+    }
+}
+
+.newscard__save-btn_active {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    position: absolute;
+    border: none;
+    cursor: pointer;
+    transition: opacity .2s ease-out;
+    padding: 0;
+    outline: 0;
+    z-index: 1;
+    background-color: transparent;
+    background: #FFFFFF;
+    top: 21px;
+    right: 21px;
+    background-image: url(../../images/NewsCard/savebtn-active.png);
+    background-size: cover;
+
+}
+
+@media screen and (max-width: 1000px) {
+    .newscard__save-btn_active {
+        top: 8px;
+        right: 8px;
+    }
+}
+
+
+.newscard__trash-btn {
+
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    position: absolute;
+    border: none;
+    cursor: pointer;
+    transition: opacity .2s ease-out;
+    padding: 0;
+    outline: 0;
+    z-index: 1;
+    background-color: transparent;
+    background: #FFFFFF;
+    top: 21px;
+    right: 21px;
+    background-image: url(../../images/NewsCard/trashicon.svg);
+    background-size: cover;
+}
+
+.newscard__trash-btn:hover {
+    background-image: url(../../images/NewsCard/trashiconhover.svg);
+}
+
+
+@media screen and (max-width: 1000px) {
+    .newscard__trash-btn {
+        top: 8px;
+        right: 8px;
+    }
+}
+
+.newscard__category {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    color: #000000;
+    background-color: white;
+    position: absolute;
+    top: 21px;
+    left: 21px;
+    padding: 8px 12px;
+    border-radius: 10px;
+}
+
+.newscard__info-span{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    text-align: center;
+    color: #000000;
+    background-color: white;
+    position: absolute;
+    top: 21px;
+    right: 66px;
+    padding: 14px 12px;
+    border-radius: 10px;
+}
+
+.newscard__info-span_hidden{
+    display: none;
 }

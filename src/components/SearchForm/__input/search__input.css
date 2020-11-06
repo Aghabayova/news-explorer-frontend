@@ -7,11 +7,15 @@
 }
 
 .search__input:focus {
-    /* removing the input focus blue box. Put this on the form if you like. */
     outline: none;
 }
 
 .search__input::placeholder {
     color: #B6BCBF;
-   
+}
+
+@media screen and (max-width: 1000px) {
+    .search__input {
+        margin-right: 60px;
+    }
 }

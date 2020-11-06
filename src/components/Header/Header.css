@@ -1,14 +1,69 @@
-@import url(__label/header__label.css);
-
 .header {
     
-    border-bottom: 1px solid rgba(84, 84, 84, .7);
+    border-bottom: 1px solid rgba(145, 143, 143, 0.7);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     max-width: 1440px;
-    padding: 20px 104px 10px 106px;
-    
+    padding: 20px 104px 0 106px;
 
   }
+
+    .header.header__black {
+      color: #000;
+    }
+
+    .header__black .header__label,
+    .header__black .navigation__link,
+    .header__black .navigation__link.active{
+      color: #000;
+    }
+
+    .header__black .navigation__link.active {
+        border-bottom: 3px solid #000;
+      }
+
+    .header__black .navigation__auth {
+      color: #000;
+      border: 1px solid #D1D2D6
+    }
+    .header__black .navigation__auth:hover {
   
+      border: 1px solid #000;
+    }
+
+    .header__black .navigation__auth-logout {
+      background-image: url(../../images/Navigation/logout_black.svg);
+    }
+    
+
+  
+  @media screen and (max-width: 1000px){
+    .header{
+      padding: 10px 40px 0 40px;
+    }
+  }
+  @media screen and (max-width: 500px){
+    .header{
+      padding: 5px 16px 0;
+    }
+  }
+
+  .header__label {
+    width: 200px;
+    color: #ffffff;
+    font-family: "Roboto Slab";
+    font-size: 20px;
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: 24px;
+    text-align: left;
+    text-decoration: none;
+    margin-top: 10px;
+}
+@media screen and (max-width: 500px){
+  .header__label{
+    font-size: 16px;
+  }
+}

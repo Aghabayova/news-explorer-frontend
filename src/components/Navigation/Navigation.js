@@ -1,18 +1,30 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navigation.css';
-import signout from "../../images/Navigation/signout.svg"
+import { useLocation } from "react-router-dom";
 
-function Navigation() {
+
+function Navigation(props) {
+    const { pathname } = useLocation();
+    const textPath = `${pathname === '/saved-news' ? 'Грета' : 'Авторизоваться'}`;
+    const logOut = `${pathname === '/saved-news' ? 'navigation__auth-logout' : ''}`;
+
 
     return (
         <nav className="navigation">
             <NavLink exact to='/' className="navigation__link" >Главная</NavLink>
             <NavLink to='/saved-news' className="navigation__link" >Сохранённые статьи</NavLink>
-            <button className="navigation__auth">
-                <p className="navigation__auth-status">Грета</p>
-                <img className="navigation__auth-logout" alt="" src={signout}/>
-            </button>
+            <NavLink
+                className="navigation__auth"
+                onLogout={props.onLogout}
+                onClick={props.onLogin}
+                exact
+                to="/"
+            >
+                {textPath}
+                <div className={logOut} />
+            </NavLink>
+
         </nav>
     );
 }
