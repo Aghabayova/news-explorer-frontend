@@ -9,6 +9,7 @@ import Footer from '../Footer/Footer';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import InfoToolTip from '../InfoToolTip/InfoToolTip';
+
 import './App.css';
 import { useLocation } from "react-router-dom";
 
@@ -19,26 +20,33 @@ function App() {
   const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
   const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
+  const [isMobile, setisMobile] = React.useState(false);
 
 
+  function mobileMenuToggle() {
+    isMobile ? setisMobile(false) : setisMobile(true);
+  }
 
-  function handleRegisterClick(){
+  function handleRegisterClick() {
     setIsLoginPopupOpen(false);
     setIsRegisterPopupOpen(true);
   }
 
-  function handleSwitchToLogin(){
+  function handleSwitchToLogin() {
     setIsRegisterPopupOpen(false);
     setIsLoginPopupOpen(true);
   }
 
   function handleLoginClick() {
     setIsLoginPopupOpen(true);
-    console.log('clicked');
   }
-  function handleInfoToolPopup(){
+  function handleInfoToolPopup() {
     setIsRegisterPopupOpen(false);
     setIsInfoToolTipOpen(true);
+  }
+  function switchInfoToolToLogin() {
+    setIsInfoToolTipOpen(false);
+    setIsLoginPopupOpen(true);
   }
 
   //обработчик закрытия попапов
@@ -46,22 +54,26 @@ function App() {
     setIsLoginPopupOpen(false);
     setIsRegisterPopupOpen(false);
     setIsInfoToolTipOpen(false);
-    console.log('clicked');
   }
 
   return (
     <div className="App">
+
 
       {pathname === '/' ? (
         <div className="App__helper">
 
           <Header
             onLogin={handleLoginClick}
+            isMobile={isMobile}
+            onMenuClick={mobileMenuToggle}
           />
           <SearchForm />
         </div>
       ) :
-        (<Header />)}
+        (<Header 
+          isMobile={isMobile}
+          onMenuClick={mobileMenuToggle}/>)}
       <Register
         onClose={closePopups}
         isOpen={isRegisterPopupOpen}
@@ -73,9 +85,10 @@ function App() {
         onClose={closePopups}
         isOpen={isLoginPopupOpen}
       />
-      <InfoToolTip 
-      isOpen={isInfoToolTipOpen}
-      onClose={closePopups}
+      <InfoToolTip
+        isOpen={isInfoToolTipOpen}
+        onClose={closePopups}
+        onLogin={switchInfoToolToLogin}
       />
       <Switch>
         <Route exact path="/">

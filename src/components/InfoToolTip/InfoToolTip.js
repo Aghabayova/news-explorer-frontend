@@ -10,7 +10,7 @@ function InfoToolTip(props) {
 
         <PopupWithForm isOpen={props.isOpen} onClose={props.onClose}  name="infotooltip" heading="Пользователь успешно зарегистрирован!" >
    
-            <span className="popup__infotool">Войти</span>
+            <span className="popup__infotool" onClick={props.onLogin}>Войти</span>
         </PopupWithForm >
     )
 }

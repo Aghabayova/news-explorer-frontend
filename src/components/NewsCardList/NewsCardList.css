@@ -8,13 +8,13 @@
 
 @media screen and (max-width: 1000px) {
     .newscards {
-        padding: 30px 40px 25px;
+        padding: 35px 40px 25px;
     }
 }
 
 .newscards__cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(  400px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(  400px, 1fr));
     row-gap: 16px;
     column-gap: 16px;
     justify-content: center;
@@ -73,8 +73,8 @@
     letter-spacing: normal;
     line-height: 24px;
     text-align: center;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 18px;
+    padding-bottom: 18px;
     align-self: center;
     outline: none;
     cursor: pointer;

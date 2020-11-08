@@ -1,6 +1,5 @@
 .navigation {
     display: flex;
-
 }
 
 .navigation__auth {
@@ -26,37 +25,23 @@
     font-weight: 500;
 }
 
-@media screen and (max-width: 1000px) {
-    .navigation__auth {
-        font-size: 16px;
-        line-height: 24px;
-        margin-top: 3px;
-        height: 40px;
-        margin-left: 16px;
-        min-width: 100px;
-        padding: 0 13px;
-    }
-
-}
-
 .navigation__auth-logout {
-    background-image: url(../../images/Navigation/signout.svg);
+    background-image: url(../../images/Navigation/logoutblack.svg);
     width: 24px;
     height: 24px;
     margin-left: 6px;
     background-repeat: no-repeat;
     margin-top: 8px;
+}
 
+.navigation__auth-logout_hidden {
+    display: none;
 }
 
 .navigation__auth:hover {
     border-color: rgba(204, 201, 201, 0.63);
     background-color: rgba(230, 230, 230, 0.53);
 }
-
-
-
-
 
 .navigation__link {
 
@@ -71,15 +56,6 @@
     margin-top: 10px;
 }
 
-@media screen and (max-width: 1000px) {
-    .navigation__link {
-        font-size: 16px;
-        line-height: 24px;
-        margin-top: 10px;
-        margin-left: 20px;
-    }
-}
-
 .navigation__link.active {
     border-bottom: 3px solid white;
     color: white;
@@ -87,8 +63,91 @@
 }
 
 @media screen and (max-width: 1000px) {
+    .navigation__auth {
+        font-size: 16px;
+        line-height: 24px;
+        margin-top: 3px;
+        height: 40px;
+        margin-left: 16px;
+        min-width: 100px;
+        padding: 0 13px;
+    }
+
+    .navigation__link {
+        font-size: 16px;
+        line-height: 24px;
+        margin-top: 10px;
+        margin-left: 20px;
+    }
+
     .navigation__link.active {
         padding-bottom: 18px;
+    }
+}
+
+@media (max-width: 750px) {
+    .navigation {
+        display: none;
+    }
+
+    .navigation__mobile {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        background: #1A1B22;
+        left: 0px;
+        top: 0px;
+        z-index: 2;
+        width: 100%;
+        padding-top: 56px;
+    }
+
+    .navigation__auth-logout{
+        background-image: url(../../images/Navigation/logoutwhite.svg);
+    }
+
+    .navigation__link.active {
+        border: none;
+        padding-bottom: 0;
+    }
+
+    .header__mobile .header__label,
+    .header__mobile .navigation__auth {
+        color: white;
+    }
+
+    .header__black .navigation__link.active {
+        border: none;
+        color: white;
+    }
+
+    .navigation__link {
+        margin: 0;
+        font-size: 18px;
+        line-height: 24px;
+        padding: 32px 0 0 15px;
+    }
+
+    .navigation__link:first-child {
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        padding-left: -16px;
+
+    }
+
+    .navigation__auth {
+        margin-top: 35px;
+        padding: 20px 13px 25px 13px;
+        text-align: center;
+        line-height: 17px;
+        letter-spacing: 1px;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin-right: 16px;
+        margin-bottom: 20px;
+    }
+
+    .header__black .navigation__link {
+        color: white;
     }
 }
 

@@ -18,8 +18,10 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    object-fit: cover;
     cursor: pointer;
     background-color: #000;
+    box-sizing: border-box;
 
 }
 
@@ -94,22 +96,6 @@
 }
 
 
-@media screen and (max-width: 1000px) {
-    .newscard__title {
-        font-size: 22px;
-        line-height: 26px;
-        margin: 5px 0 10px;
-        height: auto;
-        -webkit-line-clamp: 3;
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .newscard__title {
-        -webkit-line-clamp: 2;
-    }
-}
-
 .newscard__article {
     display: -webkit-box;
     max-width: 352px;
@@ -128,13 +114,6 @@
 }
 
 
-
-@media screen and (max-width: 1000px) {
-    .newscard__article {
-        height: 88px;
-    }
-}
-
 .newscard__link {
     max-width: 352px;
     color: #b6bcbf;
@@ -148,11 +127,6 @@
     margin: 0;
 }
 
-@media screen and (max-width: 1000px) {
-    .newscard__link {
-        margin-top: 4px;
-    }
-}
 
 .newscard__save-btn {
 
@@ -180,13 +154,6 @@
 
 }
 
-@media screen and (max-width: 1000px) {
-    .newscard__save-btn {
-        top: 8px;
-        right: 8px;
-    }
-}
-
 .newscard__save-btn_active {
     width: 40px;
     height: 40px;
@@ -205,13 +172,6 @@
     background-image: url(../../images/NewsCard/savebtn-active.png);
     background-size: cover;
 
-}
-
-@media screen and (max-width: 1000px) {
-    .newscard__save-btn_active {
-        top: 8px;
-        right: 8px;
-    }
 }
 
 
@@ -237,14 +197,6 @@
 
 .newscard__trash-btn:hover {
     background-image: url(../../images/NewsCard/trashiconhover.svg);
-}
-
-
-@media screen and (max-width: 1000px) {
-    .newscard__trash-btn {
-        top: 8px;
-        right: 8px;
-    }
 }
 
 .newscard__category {
@@ -281,4 +233,43 @@
 
 .newscard__info-span_hidden{
     display: none;
+}
+
+@media screen and (max-width: 1000px) {
+    .newscard__article {
+        height: 88px;
+    }
+    .newscard__title {
+        font-size: 22px;
+        line-height: 26px;
+        margin: 5px 0 10px;
+        height: auto;
+        -webkit-line-clamp: 3;
+    }
+    .newscard__save-btn_active {
+        top: 10px;
+        right: 10px;
+    }
+    .newscard__link {
+        margin-top: 4px;
+    }
+    .newscard__save-btn {
+        top: 10px;
+        right: 10px;
+    }
+    .newscard__category {
+        top: 10px;
+        left: 15px;
+    }
+    .newscard__trash-btn {
+        top: 10px;
+        right: 10px;
+    }
+}
+
+
+@media screen and (max-width: 500px) {
+    .newscard__title {
+        -webkit-line-clamp: 2;
+    }
 }
