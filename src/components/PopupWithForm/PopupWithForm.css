@@ -17,6 +17,7 @@
     opacity: 1;
     visibility: visible;
     transition-delay: 0s;
+    z-index: 9;
 }
 
 .popup__close {
