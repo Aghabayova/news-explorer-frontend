@@ -25,7 +25,7 @@
 * WebPack
 
 
-* [Ссылка на проект](https://aghabayova.github.io/react-mesto-auth/)
+* [Ссылка на проект](https://aghabayova.github.io/news-explorer-frontend/)
 
 
 1. Для начала, запустите клонирование репозитория:
