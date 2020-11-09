@@ -9,6 +9,7 @@ import Footer from '../Footer/Footer';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import InfoToolTip from '../InfoToolTip/InfoToolTip';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import './App.css';
 import { useLocation } from "react-router-dom";
