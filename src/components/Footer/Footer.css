@@ -1,0 +1,126 @@
+.footer {
+    display: flex;
+    margin: 0 auto;
+    max-width: 1440;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 12px 105px;
+    background-color: #ffffff;
+    color: #1a1b22;
+}
+
+.footer__copyright {
+
+    color: #b6bcbf;
+    max-width: 300px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: 22px;
+    padding-top: 4px;
+}
+
+.footer__nav {
+    max-width: 410px;
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: 24px;
+    display: flex;
+    flex-direction: row;
+}
+
+.footer__nav-link {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #1A1B22;
+    margin-right: 5px;
+}
+
+.footer__nav-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    list-style-type: none;
+    text-decoration: none;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+}
+
+@media screen and (max-width: 1000px) {
+    .footer {
+        padding: 15px 39px 0;
+    }
+
+    .footer__nav-link {
+        margin-right: 0;
+        margin-left: 14px;
+    }
+
+    .footer__nav-link{
+        margin: 0;
+    }
+    .footer__nav-link_gb {
+        margin-right: 27px;
+    }
+    .footer__nav-link_main {
+        margin-right: 15px;
+    }
+
+}
+
+@media screen and (max-width: 750px) {
+    .footer {
+        flex-direction: column;
+        padding: 0 16px;
+        align-items: left;
+    }
+
+    .footer__copyright {
+        max-width: 288px;
+        order: 2;
+    }
+
+    .footer__nav {
+        max-width: 100%;
+        flex-direction: row;
+        order: 1;
+        margin: 0;
+        margin-top: 28px;
+        justify-content: space-between;
+        height: 74px;
+    }
+
+    .footer__nav-links_mobile {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        text-align: left;
+        padding: 0;
+    }
+
+    .footer__nav-link_mobile {
+        margin: 0;
+    }
+    .footer__nav-link_main {
+        margin: 0;
+    }
+
+    .footer__nav-links_social {
+        margin-top: -14px;
+
+    }
+
+    .footer__nav-link_gb {
+        margin-right: 10px;
+    }
+
+}

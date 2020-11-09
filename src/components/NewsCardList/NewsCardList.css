@@ -1,0 +1,93 @@
+.newscards {
+    max-width: 1440px;
+    padding: 51px 104px;
+    display: flex;
+    flex-direction: column;
+    background: #F5F6F7;
+}
+
+@media screen and (max-width: 1000px) {
+    .newscards {
+        padding: 35px 40px 25px;
+    }
+}
+
+.newscards__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(  400px, 1fr));
+    row-gap: 16px;
+    column-gap: 16px;
+    justify-content: center;
+    max-width: 1440px;
+
+}
+
+@media screen and (max-width: 1000px) {
+    .newscards__cards {
+        grid-template-columns: repeat(auto-fit, minmax(  224px, 1fr));
+        row-gap: 8px;
+        column-gap: 8px;
+    }
+}
+@media screen and (max-width: 500px) {
+    .newscards__cards {
+        grid-template-columns: repeat(auto-fit, minmax(  288px, 1fr));
+        
+    }
+}
+
+.newscards__search-title {
+    max-width: 712px;
+    color: #1a1b22;
+    font-family: "Roboto Slab";
+    font-size: 40px;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: 46px;
+    text-align: left;
+    margin-bottom: 62px;
+}
+
+@media screen and (max-width: 1000px) {
+    .newscards__search-title {
+        font-size: 30px;
+        line-height: 34px;
+        margin-bottom: 27px;
+    }
+}
+
+.newscards__more-btn {
+    background: #FFFFFF;
+    border-radius: 80px;
+    width: 288px;
+    height: 100%;
+    margin-top: 64px;
+    margin-bottom: 30px;
+    border: none;
+    color: #1a1b22;
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 500;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: 24px;
+    text-align: center;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    align-self: center;
+    outline: none;
+    cursor: pointer;
+}
+.newscards__more-btn:hover{
+    background-color: rgba(245, 238, 238, 0.63);
+    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, .16);
+    border-color: rgba(204, 201, 201, 0.63);
+}
+@media screen and (max-width: 1000px) {
+    .newscards__more-btn {
+        margin-top: 25px;
+        margin-bottom: 20px;
+        width: 240px;
+    }
+}

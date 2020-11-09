@@ -1,0 +1,12 @@
+@import url(./__helper/app__helper.css);
+.App {
+  max-width: 1440px;
+  font-family: 'Roboto', 'Roboto Slab', 'Source Sans Pro', 'Inter', Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  background-color: #fff;
+  color: white;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+

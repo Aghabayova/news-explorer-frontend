@@ -1,0 +1,122 @@
+.header {
+
+  border-bottom: 1px solid rgba(145, 143, 143, 0.7);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 1440px;
+  padding: 20px 104px 0 106px;
+}
+
+.header.header__black {
+  color: #000;
+}
+
+.header__black .header__label,
+.header__black .navigation__link,
+.header__black .navigation__link.active {
+  color: #000;
+}
+
+.header__black .navigation__link.active {
+  border-bottom: 3px solid #000;
+}
+
+.header__black .navigation__auth {
+  color: #000;
+  border: 1px solid #D1D2D6
+}
+
+.header__black .navigation__auth:hover {
+  border: 1px solid #000;
+}
+/*
+.header__black .navigation__auth-logout {
+  background-image: url(../../images/Navigation/logoutblack.svg);
+*/
+
+
+
+@media screen and (max-width: 1000px) {
+  .header {
+    padding: 10px 40px 0 40px;
+  }
+}
+
+.header__label {
+  width: 200px;
+  color: #ffffff;
+  font-family: "Roboto Slab";
+  font-size: 20px;
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: normal;
+  line-height: 24px;
+  text-align: left;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+@media screen and (max-width: 500px) {
+  .header {
+    padding: 5px 16px 0;
+  }
+
+  .header__label {
+    font-size: 16px;
+  }
+}
+
+.header__burger {
+  display: none;
+}
+
+.header__burger:hover {
+  opacity: 0.6;
+}
+
+.header__burger-menu {
+  width: 20px;
+  cursor: pointer;
+  transition: opacity .2s ease-out;
+}
+
+.header__burger-menu:hover {
+  opacity: 0.6;
+}
+
+@media (max-width: 750px) {
+  .header__label {
+    z-index: 3;
+    margin: 0;
+  }
+  .header{
+      padding: 16px;
+  
+  }
+
+  .header__burger {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    z-index: 3;
+    object-fit: cover;
+  }
+
+  .header__mobile:before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    left: 0;
+    right: 0;
+  }
+  
+}
