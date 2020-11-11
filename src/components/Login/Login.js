@@ -3,9 +3,24 @@ import PopupWithForm from '../PopupWithForm/PopupWithForm';
 
 
 function Login(props) {
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+   
 
+
+    function handleChange(e) {
+        const { value } = e.target;
+        console.log(value);
+        
+        e.target.name === 'email'
+          ? setEmail(value)
+          : setPassword(value);
+      }
 
     function handleSubmit(e) {
+        e.preventDefault();
+        props.onLogin(email, password)
+        //console.log(props.onLogin);
 
     }
 
@@ -16,11 +31,11 @@ function Login(props) {
             <input
                 className="popup__input popup__input_email"
                 id="email-login"
-
+                value={email}
                 placeholder="Введите почту"
                 type="email"
                 name="email"
-
+                onChange={handleChange}
                 required
                 maxLength="60" />
             <span className='popup__span-error'></span>
@@ -31,6 +46,8 @@ function Login(props) {
                 placeholder="Введите пароль"
                 type="password"
                 required
+                onChange={handleChange}
+                value={password}
                 name="password"
                 minLength="6"
                 maxLength="30" />
