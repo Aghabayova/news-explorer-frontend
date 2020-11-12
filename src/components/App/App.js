@@ -1,6 +1,6 @@
 //import logo from './logo.svg';
 import React from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import SavedNews from '../SavedNews/SavedNews';
 import Main from '../Main/Main';
 import Header from '../Header/Header';
@@ -29,20 +29,8 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({ name: '', _id: '' });
   const [email, setEmail] = React.useState('');
 
-  const history = useHistory();
+  
   const escape = require('escape-html');
-
-  React.useEffect(() => {
-
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([userData, articles]) => {
-        setArticles(articles);
-        setCurrentUser(userData);
-
-      })
-      .catch(err => console.log(err));
-
-  }, []);
 
   // Записать токен
   function tokenCheck() {
@@ -52,13 +40,12 @@ function App() {
     if (jwt) {
       // проверим токен
       auth.getContent(jwt).then((res) => {
-        if (res) {
+        if (res.data) {
           //setLoggedIn(true);
           setEmail({
             email: res.data.email
           });
-          setLoggedIn(true);
-          
+          setLoggedIn(true); 
         }
       })
         .catch((err) => {

@@ -9,7 +9,7 @@ class Api {
 
     //получить изначальный массив карточек
     getInitialCards() {
-        return fetch(`${this._url}/cards`, {
+        return fetch(`${this._url}/articles`, {
             method: 'GET',
             headers: this._headers,
         })
@@ -55,22 +55,6 @@ class Api {
             });
     }
 
-    //Редактирование аватара
-    editUserAvatar(userData) {
-        return fetch(`${this._url}/users/me/avatar`, {
-            method: 'PATCH',
-            headers: this._headers,
-            body: JSON.stringify({
-                avatar: userData.avatar
-            })
-        })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Что-то пошло не так: ${res.status}`);
-            })
-    }
 
     //Добавление новой карточки на сервер
     createArticle(category, title, text, date, source, link, image) {
@@ -86,7 +70,7 @@ class Api {
 
     //Удаление Карточки
     deleteCard(id) {
-        return fetch(`${this._url}/cards/${id}`, {
+        return fetch(`${this._url}/articles/${id}`, {
             method: 'DELETE',
             headers: this._headers,
         })
@@ -100,7 +84,7 @@ class Api {
 
     //Добавление Лайков
     changeLikeCardStatus(id, status) {
-        return fetch(`${this._url}/cards/likes/${id}`, {
+        return fetch(`${this._url}/articles/saves/${id}`, {
             method: `${(status) ? `PUT` : `DELETE`}`,
             headers: this._headers,
         })
@@ -114,7 +98,7 @@ class Api {
 
     //Удаление Лайков
     deleteLike(card) {
-        return fetch(`${this._url}/cards/likes/${card._id}`, {
+        return fetch(`${this._url}/articles/saves/${card._id}`, {
             method: 'DELETE',
             headers: this._headers,
         })
@@ -131,8 +115,10 @@ class Api {
 const api = new Api({
     baseUrl: apiData.baseUrl,
     headers: {
-        authorization: apiData.authorization,
-        'Content-Type': 'application/json'
+       //  authorization: apiData.authorization,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      
     }
 });
 

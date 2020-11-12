@@ -1,11 +1,12 @@
-export const BASE_URL = 'http://localhost:3000';
+export const BASE_URL = 'https://api.my-practicum.ru';
 
-export const authorise = (email, password,) => {
+export const authorise = ( email, password ) => {
   return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      //'Access-Control-Allow-Credentials': true,
     },
     credentials: 'include',
     body: JSON.stringify({ email, password })
@@ -43,7 +44,7 @@ export const register = (email, password, name) => {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
+      //'Access-Control-Allow-Credentials': true,
     },
     body: JSON.stringify({ email, password, name })
   })
@@ -60,12 +61,15 @@ export const register = (email, password, name) => {
 export const getContent = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
+    credentilas: 'include',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+     'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     }
   })
     .then(res => res.json())
     .then(data => data)
+    .catch(error => {
+      console.log('not authorised');
+    })
 }
