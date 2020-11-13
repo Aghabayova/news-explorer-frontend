@@ -22,7 +22,7 @@ function Header(props) {
         <header className={headerClass} >
             <NavLink exact to='/' className="header__label" >NewsExplorer</NavLink>
 
-            <Navigation onLogin={props.onLogin} isMobile={props.isMobile}/>
+            <Navigation loggedIn={props.loggedIn} currentUser={props.currentUser} onLogin={props.onLogin} onLogOut={props.onLogOut} isMobile={props.isMobile}/>
 
             <button className="header__burger" onClick={props.onMenuClick} >
                 <img className="header__burger-menu" src={(pathname === '/saved-news') ? burgerBtnWhite :  mobileBurgerBtn} alt="бургер меню" />

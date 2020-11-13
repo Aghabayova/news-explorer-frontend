@@ -30,10 +30,15 @@
 .header__black .navigation__auth:hover {
   border: 1px solid #000;
 }
-/*
+
+.header .navigation__auth-logout {
+  background-image: url(../../images/Navigation/logoutwhite.svg);
+}
+
 .header__black .navigation__auth-logout {
   background-image: url(../../images/Navigation/logoutblack.svg);
-*/
+}
+
 
 
 

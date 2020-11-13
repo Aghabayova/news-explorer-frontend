@@ -5,23 +5,26 @@ import PopupWithForm from '../PopupWithForm/PopupWithForm';
 function Login(props) {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
-   
-
 
     function handleChange(e) {
         const { value } = e.target;
-        console.log(value);
         
-        e.target.name === 'email'
-          ? setEmail(value)
-          : setPassword(value);
+        //e.target.name === 'email'
+        //  ? setEmail(value)
+        //  : setPassword(value);
+
+        if (e.target.name === 'email') {
+            setEmail(value)
+        }
+        if (e.target.name === 'password') {
+            setPassword(value);
+        }
+
       }
 
     function handleSubmit(e) {
         e.preventDefault();
-        props.onLogin(email, password)
-        //console.log(props.onLogin);
-
+        props.onLogin({email, password})
     }
 
     return (

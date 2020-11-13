@@ -1,6 +1,6 @@
 //import logo from './logo.svg';
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import SavedNews from '../SavedNews/SavedNews';
 import Main from '../Main/Main';
 import Header from '../Header/Header';
@@ -17,7 +17,7 @@ import api from '../../utils/Api';
 import * as auth from '../../utils/auth.js';
 
 
-function App() {
+function App(props) {
 
   const { pathname } = useLocation();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
@@ -25,33 +25,32 @@ function App() {
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
   const [isMobile, setisMobile] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState({});
   const [articles, setArticles] = React.useState([]);
-  const [currentUser, setCurrentUser] = React.useState({ name: '', _id: '' });
+  //const [currentUser, setCurrentUser] = React.useState({ name: '', _id: '' });
   const [email, setEmail] = React.useState('');
 
-  
+
+  const history = useHistory();
   const escape = require('escape-html');
 
   // Записать токен
   function tokenCheck() {
     // если у пользователя есть токен в localStorage,
     // эта функция проверит валидность токена
-    const jwt = localStorage.getItem('jwt');
+    const jwt = localStorage.getItem('loggedIn');
     if (jwt) {
-      // проверим токен
-      auth.getContent(jwt).then((res) => {
-        if (res.data) {
-          //setLoggedIn(true);
-          setEmail({
-            email: res.data.email
-          });
-          setLoggedIn(true); 
-        }
-      })
-        .catch((err) => {
-          console.log(err);
-         
+      auth.getContent()
+        .then(res => {
+          if (res.data && loggedIn === 'true') {
+
+            setCurrentUser(res.data);
+            setLoggedIn(true);
+          } else if (loggedIn === 'true') {
+            localStorage.removeItem('loggedIn');
+          }
         })
+        .catch(error => console.log(error));
     }
   }
 
@@ -100,21 +99,29 @@ function App() {
       });
   }
 
+  function handleLogOut() {
+    console.log('logout');
+    localStorage.removeItem('loggedIn');
+    setLoggedIn(false);
+    history.push('/');
+  }
+
   //обработчик входа на страницу
   function handleLogin({ email, password }) {
- 
     return auth.authorise(email, escape(password))
-      .then((res) => {
-        if (res && res.token) {
-          localStorage.setItem('jwt', res.token);
-          tokenCheck();
+      .then(res => {
+        if (res) {
+
+          localStorage.setItem('loggedIn', 'true');
+          setCurrentUser(res.data);
+          setLoggedIn(true);
+          setIsLoginPopupOpen(false);
         }
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
-       
       })
   }
 
@@ -137,13 +144,24 @@ function App() {
               onLogin={handleLoginClick}
               isMobile={isMobile}
               onMenuClick={mobileMenuToggle}
+              loggedIn={loggedIn}
+              currentUser={currentUser}
+              onLogOut={handleLogOut}
             />
-            <SearchForm />
+            <SearchForm
+              searchQuery={props.searchQuery}
+              searchQueryError={props.searchQueryError}
+              onChange={props.handleSearchQueryChange}
+              onSearch={props.onSearch}
+            />
           </div>
         ) :
           (<Header
             isMobile={isMobile}
-            onMenuClick={mobileMenuToggle} />)}
+            onMenuClick={mobileMenuToggle}
+            loggedIn={loggedIn}
+            currentUser={currentUser}
+            onLogOut={handleLogOut} />)}
         <Register
           onClose={closePopups}
           onRegister={handleRegister}
@@ -152,7 +170,7 @@ function App() {
           onConfirm={handleInfoToolPopup}
         />
         <Login
-         onLogin={handleLogin}
+          onLogin={handleLogin}
           switchToRegisterPopup={handleRegisterClick}
           onClose={closePopups}
           isOpen={isLoginPopupOpen}
@@ -169,7 +187,9 @@ function App() {
             component={SavedNews}
           />
           <Route exact path="/">
-            <Main />
+            <Main 
+              isLoading = {false}
+            />
           </Route>
           <Route path="/saved-news">
             <SavedNews />

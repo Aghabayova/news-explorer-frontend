@@ -6,7 +6,7 @@ import About from '../About/About';
 import './Main.css';
 import { searchResult } from '../../utils/constants.js';
 
-function Main() {
+function Main(props) {
 
     function isSaved(item) {
        return item.save === false;
@@ -16,11 +16,13 @@ function Main() {
 
     return (
         <main className="main">
-            <Preloader />
-            <NotFoundNews />
+            {props.isLoading && <Preloader />}
+            {newsArray.length === 0? <NotFoundNews />:
+
             <div className="main__cards">
                 <NewsCardList  array={newsArray} />
             </div>
+            }
             <About />
         </main>
     );

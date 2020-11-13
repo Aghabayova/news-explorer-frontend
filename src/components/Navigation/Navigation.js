@@ -6,10 +6,10 @@ import { useLocation } from "react-router-dom";
 
 function Navigation(props) {
     const { pathname } = useLocation();
-    const textPath = `${pathname === '/saved-news' ? 'Грета' : 'Авторизоваться'}`;
-    const logOut = `${pathname === '/saved-news' ? 'navigation__auth-logout' : 'navigation__auth-logout_hidden'}`;
+   
+    const textPath = (props.loggedIn === true) ? props.currentUser.name : 'Авторизоваться';
+    const logOut = (props.loggedIn === true) ? 'navigation__auth-logout' : 'navigation__auth-logout_hidden';
     
-    console.log(props.isMobile);
     const navigation = (props.isMobile === true ) ? 'navigation__mobile' : "navigation";
 
     return (
@@ -19,12 +19,12 @@ function Navigation(props) {
             <NavLink to='/saved-news' className="navigation__link" >Сохранённые статьи</NavLink>
             <NavLink
                 className="navigation__auth"
-                onClick={props.onLogin}
+                onClick={props.loggedIn? props.onLogOut:  props.onLogin}
                 exact
                 to="/"
             >
                 {textPath}
-                <span className={logOut} />
+                <span className={logOut} onClick={props.onLogout} />
             </NavLink>
         </nav>
     );
