@@ -26,16 +26,17 @@ function App(props) {
   const [isMobile, setisMobile] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
-  const [articles, setArticles] = React.useState([]);
+  const [savedArticles, setSavedArticles] = React.useState([]);
+  //const [articles, setArticles] = React.useState([]);
   //const [currentUser, setCurrentUser] = React.useState({ name: '', _id: '' });
-  const [email, setEmail] = React.useState('');
+  //const [email, setEmail] = React.useState('');
 
 
   const history = useHistory();
   const escape = require('escape-html');
 
   // Записать токен
-  function tokenCheck() {
+  function authCheck() {
     // если у пользователя есть токен в localStorage,
     // эта функция проверит валидность токена
     const jwt = localStorage.getItem('loggedIn');
@@ -43,7 +44,6 @@ function App(props) {
       auth.getContent()
         .then(res => {
           if (res.data && loggedIn === 'true') {
-
             setCurrentUser(res.data);
             setLoggedIn(true);
           } else if (loggedIn === 'true') {
@@ -56,7 +56,7 @@ function App(props) {
 
   // Проверить токен
   React.useEffect(() => {
-    tokenCheck();
+    authCheck();
   }, []);
 
 
@@ -100,7 +100,6 @@ function App(props) {
   }
 
   function handleLogOut() {
-    console.log('logout');
     localStorage.removeItem('loggedIn');
     setLoggedIn(false);
     history.push('/');
@@ -135,11 +134,8 @@ function App(props) {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
-
-
         {pathname === '/' ? (
           <div className="App__helper">
-
             <Header
               onLogin={handleLoginClick}
               isMobile={isMobile}
@@ -185,6 +181,7 @@ function App(props) {
             path="/saved-news"
             loggedIn={loggedIn}
             component={SavedNews}
+            savedArticles={savedArticles} 
           />
           <Route exact path="/">
             <Main 

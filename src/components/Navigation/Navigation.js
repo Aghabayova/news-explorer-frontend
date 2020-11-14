@@ -1,12 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navigation.css';
-import { useLocation } from "react-router-dom";
 
 
 function Navigation(props) {
-    const { pathname } = useLocation();
-   
+    
     const textPath = (props.loggedIn === true) ? props.currentUser.name : 'Авторизоваться';
     const logOut = (props.loggedIn === true) ? 'navigation__auth-logout' : 'navigation__auth-logout_hidden';
     

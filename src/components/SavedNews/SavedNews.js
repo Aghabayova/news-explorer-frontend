@@ -4,7 +4,7 @@ import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader';
 import { searchResult } from '../../utils/constants.js';
 
 
-function SavedNews() {
+function SavedNews(props) {
     function isSaved(item) {
         return item.save === true;
     }
@@ -13,7 +13,7 @@ function SavedNews() {
 
     return(
         <div className="saved-news">
-            <SavedNewsHeader />
+            <SavedNewsHeader savedArticles={props.savedArticles} />
             <div className="main__cards">
                 <NewsCardList  array={newsArray} />
             </div>

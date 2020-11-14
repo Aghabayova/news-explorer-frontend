@@ -102,9 +102,6 @@
         padding-top: 56px;
     }
 
-    .navigation__auth-logout{
-        background-image: url(../../images/Navigation/logoutwhite.svg);
-    }
 
     .navigation__link.active {
         border: none;

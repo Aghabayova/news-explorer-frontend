@@ -33,6 +33,8 @@
 
 .header .navigation__auth-logout {
   background-image: url(../../images/Navigation/logoutwhite.svg);
+  width: 20px;
+  height: 20px;
 }
 
 .header__black .navigation__auth-logout {
@@ -95,9 +97,10 @@
     z-index: 3;
     margin: 0;
   }
-  .header{
-      padding: 16px;
-  
+
+  .header {
+    padding: 16px;
+
   }
 
   .header__burger {
@@ -123,5 +126,5 @@
     left: 0;
     right: 0;
   }
-  
+
 }
