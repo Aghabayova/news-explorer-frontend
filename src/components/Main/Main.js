@@ -12,7 +12,7 @@ function Main(props) {
        return item.save === false;
     }
     
-    let newsArray = Array.from(searchResult).filter(isSaved);
+    let newsArray = props.currentResult;
 
     return (
         <main className="main">
@@ -20,7 +20,7 @@ function Main(props) {
             {newsArray.length === 0? <NotFoundNews />:
 
             <div className="main__cards">
-                <NewsCardList  array={newsArray} />
+                <NewsCardList  newsArray={newsArray} />
             </div>
             }
             <About />

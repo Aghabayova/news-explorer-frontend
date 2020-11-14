@@ -15,6 +15,7 @@ import './App.css';
 import { useLocation } from "react-router-dom";
 import api from '../../utils/Api';
 import * as auth from '../../utils/auth.js';
+import newsApi from '../../utils/NewsApi';
 
 
 function App(props) {
@@ -27,11 +28,12 @@ function App(props) {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [savedArticles, setSavedArticles] = React.useState([]);
+  const [currentResult, setCurrentResult] = React.useState({});
   //const [articles, setArticles] = React.useState([]);
   //const [currentUser, setCurrentUser] = React.useState({ name: '', _id: '' });
   //const [email, setEmail] = React.useState('');
 
-
+ 
   const history = useHistory();
   const escape = require('escape-html');
 
@@ -131,6 +133,25 @@ function App(props) {
     setIsInfoToolTipOpen(false);
   }
 
+  function onSearch(query) {
+    newsApi(query)
+        .then(response => {
+          if (response.status === 'ok') {
+            response.articles = response.articles.map(item => ({
+              ...item,
+              isSaved: false
+            }));
+            if (response.articles.length > 0) {
+             const res = response.articles.slice(0, 3);
+              setCurrentResult(res);
+            }
+          } 
+        })
+        .catch(error => {
+          console.log(error);
+        });
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -145,10 +166,7 @@ function App(props) {
               onLogOut={handleLogOut}
             />
             <SearchForm
-              searchQuery={props.searchQuery}
-              searchQueryError={props.searchQueryError}
-              onChange={props.handleSearchQueryChange}
-              onSearch={props.onSearch}
+              onSearch={onSearch}
             />
           </div>
         ) :
@@ -186,6 +204,7 @@ function App(props) {
           <Route exact path="/">
             <Main 
               isLoading = {false}
+              currentResult={currentResult}
             />
           </Route>
           <Route path="/saved-news">

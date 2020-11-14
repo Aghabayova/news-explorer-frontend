@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 
 
 function NewsCard(props) {
+    
     const [isSaved, setIsSaved] = React.useState("");
     const [infoSpan, setInfoSpan] = React.useState(false);
 
@@ -34,9 +35,11 @@ function NewsCard(props) {
         setInfoSpan(false);
     }
 
+    console.log(props);
+
     return (
         <div className="newscard" key={props.itemData._id}>
-            <img className="newscard__image" src={props.itemData.image.default} alt="новостное изображение" />
+            <img className="newscard__image" src={props.itemData.urlToImage} alt="новостное изображение" />
 
             <button 
                 className={buttonToggle} 
@@ -50,11 +53,11 @@ function NewsCard(props) {
             
             <div className="newscard__content">
                 <div className="newscard__info">
-                    <p className='newscard__date'>{props.itemData.date}</p>
+                    <p className='newscard__date'>{props.itemData.publishedAt}</p>
                     <h3 className="newscard__title">{props.itemData.title}</h3>
                     <p className="newscard__article">{props.itemData.content}</p>
                 </div>
-                <a className="newscard__link" target="_blank" rel="noreferrer" href={props.itemData.url}>{props.itemData.link}</a>
+                <a className="newscard__link" target="_blank" rel="noreferrer" href={props.itemData.url}>{props.itemData.source.name}</a>
             </div>
         </div>
     );
