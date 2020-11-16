@@ -15,7 +15,7 @@ function Navigation(props) {
         <nav className={navigation}>
             
             <NavLink exact to='/' className="navigation__link" >Главная</NavLink>
-            <NavLink to='/saved-news' className="navigation__link" >Сохранённые статьи</NavLink>
+            {props.loggedIn? <NavLink to='/saved-news' className="navigation__link" >Сохранённые статьи</NavLink> : <></>}
             <NavLink
                 className="navigation__auth"
                 onClick={props.loggedIn? props.onLogOut:  props.onLogin}
