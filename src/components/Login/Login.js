@@ -5,31 +5,47 @@ import PopupWithForm from '../PopupWithForm/PopupWithForm';
 function Login(props) {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [emailError, setEmailError] = React.useState("");
+    const [passwordError, setPasswordError] = React.useState("");
+    const emailRef = React.useRef();
+    const passwordRef = React.useRef();
+    const [emailValid, setEmailValid] = React.useState(false);
+    const [passwordValid, setPasswordValid] = React.useState(false);
+  
+
+    function validate() {
+        setEmailError(emailRef.current.validationMessage);
+        setPasswordError(passwordRef.current.validationMessage);
+
+        !emailRef.current.validity.valid
+            ? setEmailValid(false)
+            : setEmailValid(true);
+        !passwordRef.current.validity.valid
+            ? setPasswordValid(false)
+            : setPasswordValid(true);
+    }
+
+ 
 
     function handleChange(e) {
         const { value } = e.target;
-        
-        //e.target.name === 'email'
-        //  ? setEmail(value)
-        //  : setPassword(value);
-
         if (e.target.name === 'email') {
             setEmail(value)
         }
         if (e.target.name === 'password') {
             setPassword(value);
         }
-
-      }
+        validate();
+    }
 
     function handleSubmit(e) {
         e.preventDefault();
-        props.onLogin({email, password})
+        props.onLogin({ email, password })
     }
 
     return (
 
-        <PopupWithForm isOpen={props.isOpen} onClose={props.onClose}  onSubmit={handleSubmit} onSwitchToRegister={props.switchToRegisterPopup} name="login" heading="Вход" buttonText="Войти" >
+        <PopupWithForm isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit} onSwitchToRegister={props.switchToRegisterPopup} name="login" heading="Вход" buttonText="Войти" >
             <span className="popup__input-title" lang="en">Email</span>
             <input
                 className="popup__input popup__input_email"
@@ -40,8 +56,15 @@ function Login(props) {
                 name="email"
                 onChange={handleChange}
                 required
-                maxLength="60" />
-            <span className='popup__span-error'></span>
+                maxLength="60"
+                ref={emailRef} />
+            <span
+                className={`popup__input-error ${!emailValid && "popup__input-error_active "
+                    }`}
+                id="email-input-error-register"
+            >
+                {emailError}
+            </span>
             <span className="popup__input-title" lang="en">Пароль</span>
             <input
                 className="popup__input popup__input_password"
@@ -53,8 +76,16 @@ function Login(props) {
                 value={password}
                 name="password"
                 minLength="6"
-                maxLength="30" />
-            <span className="popup__span-error"></span>
+                maxLength="30"
+                ref={passwordRef}
+                />
+                  <span
+                    className={`popup__input-error ${!passwordValid && "popup__input-error_active "
+                        }`}
+                    id="password-input-error-register"
+                >
+                    {passwordError}
+                </span>
         </PopupWithForm >
     )
 }

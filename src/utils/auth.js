@@ -53,8 +53,11 @@ export function getContent(){
     method: 'GET',
     credentilas: 'include',
   })
-    .then(res => res.json())
-    .then(data => data)
+    .then(
+      res => res.json()
+     
+    )
+    .then(res => res)
     .catch(error => {
       console.log('not authorised');
     })

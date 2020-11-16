@@ -23,7 +23,7 @@ function NewsCardList(props) {
                         ?
                         <section className="newscards__cards">
                             {data.map((item, i) =>
-                                <NewsCard key={i} itemData={item} />
+                                <NewsCard key={i} itemData={item}/>
                             )}
                         </section>
                         :
@@ -34,7 +34,7 @@ function NewsCardList(props) {
             ) : (
                     <section className="newscards__cards">
                         {data.map((item, i) =>
-                            <NewsCard key={i} itemData={item} />
+                            <NewsCard key={i} itemData={item} queryCat={props.queryCat} />
                         )}
                     </section>
                 )}

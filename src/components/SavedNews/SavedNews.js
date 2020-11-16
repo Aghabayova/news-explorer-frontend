@@ -8,16 +8,18 @@ function SavedNews(props) {
     function isSaved(item) {
         return item.save === true;
     }
-    
-    let newsArray = Array.from(searchResult).filter(isSaved);
 
-    return(
+    let newsArray = props.currentResult;
+    console.log(props);
+    return (
+
         <div className="saved-news">
             <SavedNewsHeader savedArticles={props.savedArticles} />
             <div className="main__cards">
-                <NewsCardList  array={newsArray} />
+                <NewsCardList newsArray={newsArray} queryCat={props.queryCat} />
             </div>
         </div>
+
     );
 }
 export default SavedNews;

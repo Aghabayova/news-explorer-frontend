@@ -26,40 +26,51 @@ function App(props) {
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
   const [isMobile, setisMobile] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [localStData, setLocalStData] = React.useState(false);
+  const [queryCat, setQueryCat] = React.useState('');
+  const [startSearch, setstartSearch] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [savedArticles, setSavedArticles] = React.useState([]);
   const [currentResult, setCurrentResult] = React.useState({});
+  
   //const [articles, setArticles] = React.useState([]);
   //const [currentUser, setCurrentUser] = React.useState({ name: '', _id: '' });
   //const [email, setEmail] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
 
- 
+
   const history = useHistory();
   const escape = require('escape-html');
 
-  // Записать токен
-  function authCheck() {
-    // если у пользователя есть токен в localStorage,
-    // эта функция проверит валидность токена
-    const jwt = localStorage.getItem('loggedIn');
-    if (jwt) {
-      auth.getContent()
-        .then(res => {
-          if (res.data && loggedIn === 'true') {
-            setCurrentUser(res.data);
-            setLoggedIn(true);
-          } else if (loggedIn === 'true') {
-            localStorage.removeItem('loggedIn');
-          }
-        })
-        .catch(error => console.log(error));
-    }
-  }
+
 
   // Проверить токен
   React.useEffect(() => {
-    authCheck();
-  }, []);
+
+
+      const localStData = localStorage.getItem('loggedIn');
+
+      if (localStData === true) {
+        auth.getContent()
+          .then(res => {
+            if (res.data && localStData === true) {
+              console.log(currentUser);
+              setCurrentUser(res.data);
+              setLoggedIn(true);
+            } else if (localStData === true) {
+              //localStorage.removeItem('loggedIn');
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      else {
+        console.log('Not Auth');
+      }
+    
+
+  }, [localStData]);
 
 
   function mobileMenuToggle() {
@@ -89,7 +100,6 @@ function App(props) {
   }
   // Регистрация
   function handleRegister({ email, password, name }) {
-    console.log('register');
     //   setIsLoading(true);
     return auth.register(email, escape(password), name)
       .then(res => {
@@ -109,11 +119,11 @@ function App(props) {
 
   //обработчик входа на страницу
   function handleLogin({ email, password }) {
-    return auth.authorise(email, escape(password))
+    auth.authorise(email, escape(password))
       .then(res => {
-        if (res) {
+        if (res.data) {
 
-          localStorage.setItem('loggedIn', 'true');
+          localStorage.setItem('loggedIn', true);
           setCurrentUser(res.data);
           setLoggedIn(true);
           setIsLoginPopupOpen(false);
@@ -132,24 +142,50 @@ function App(props) {
     setIsRegisterPopupOpen(false);
     setIsInfoToolTipOpen(false);
   }
+  function handleEscClose(e) {
+    if (e.key === "Escape") {
+      closePopups();
+    }
+  }
+
+  function handlerOverlayClick(e) {
+    if (e.target.classList.contains("popup")) {
+      closePopups();
+    }
+  }
+
+  React.useEffect(() => {
+    window.addEventListener("keydown", handleEscClose);
+    window.addEventListener("mousedown", handlerOverlayClick);
+
+    return () => {
+      window.removeEventListener("mousedown", handlerOverlayClick);
+      window.removeEventListener("keydown", handleEscClose);
+    };
+  });
 
   function onSearch(query) {
+    setIsLoading(true);
+    setstartSearch(true);
+    setQueryCat(query);
+
     newsApi(query)
-        .then(response => {
-          if (response.status === 'ok') {
-            response.articles = response.articles.map(item => ({
-              ...item,
-              isSaved: false
-            }));
-            if (response.articles.length > 0) {
-             const res = response.articles.slice(0, 3);
-              setCurrentResult(res);
-            }
-          } 
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      .then(response => {
+        if (response.status === 'ok') {
+          response.articles = response.articles.map(item => ({
+            ...item,
+            isSaved: false
+          }));
+          if (response.articles.length > 0) {
+            const res = response.articles.slice(0, 9);
+            setCurrentResult(res);
+            setIsLoading(false);
+          }
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   return (
@@ -198,18 +234,20 @@ function App(props) {
           <ProtectedRoute
             path="/saved-news"
             loggedIn={loggedIn}
+            localStData = {localStData}
             component={SavedNews}
-            savedArticles={savedArticles} 
+            savedArticles={savedArticles}
+            currentResult={currentResult}
+            queryCat={queryCat}
           />
           <Route exact path="/">
-            <Main 
-              isLoading = {false}
+            <Main
+              isLoading={isLoading}
               currentResult={currentResult}
+              startSearch={startSearch}
             />
           </Route>
-          <Route path="/saved-news">
-            <SavedNews />
-          </Route>
+
         </Switch>
 
         <Footer />

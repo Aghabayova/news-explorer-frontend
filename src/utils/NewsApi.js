@@ -1,22 +1,22 @@
 import apiData from '../utils/ApiData';
 
 export default function getNewsApi(params) {
-
+  
   const date = new Date();
-  const currentDate = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0')
-    + '-' + date.getDate().toString().padStart(2, '0');
-  date.setDate(date.getDate() - 7);
-  const startingDate = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0')
-    + '-' + date.getDate().toString().padStart(2, '0');
-
+  const today = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  const sevenDays = date.getDate() - 7;
+  date.setDate(sevenDays);
+  const weekAgo = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   const urlApi = apiData.newsApiUrl
     + `apiKey=${apiData.newsApiKey}&`
     + `q=${params}&`
-    + `from=${startingDate}&`
-    + `to=${currentDate}&`
+    + `to=${today}&`
+    + `from=${weekAgo}&`
     + `pageSize=9`;
 
-    return fetch(urlApi, {
+    return fetch(urlApi, 
+
+      {
       method: 'GET'
     })
       .then(response => response.json())
