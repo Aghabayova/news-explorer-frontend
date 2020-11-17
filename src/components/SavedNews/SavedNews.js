@@ -10,14 +10,19 @@ function SavedNews(props) {
     }
 
     let newsArray = props.currentResult;
-    console.log(props);
     return (
 
         <div className="saved-news">
-            <SavedNewsHeader savedArticles={props.savedArticles} />
+            {props.savedArticles.length > 0?
+            <>
+            <SavedNewsHeader savedArticlecs={props.savedArticlecs} />
             <div className="main__cards">
                 <NewsCardList newsArray={newsArray} queryCat={props.queryCat} />
             </div>
+            </>
+            :
+            <p>Пока нет сохранённых статей</p>
+            }
         </div>
 
     );

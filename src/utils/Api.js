@@ -23,21 +23,20 @@ class Api {
     }
 
     //Добавление новой статьи на сервер
-    createArticle(category, date, title, text, source, link, image) {
+    createArticle(keyword, date, title, text, source, link, image) {
         return fetch(`${this._url}/articles`, {
             method: 'POST',
             headers: this._headers,
             credentials: 'include',
-            body: JSON.stringify({
-                category, title, text, date, source, link, image
-            })
-                .then((res) => {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                    return Promise.reject(`Что-то пошло не так: ${res.status}`);
+                body: JSON.stringify({
+                    keyword, title, text, date, source, link, image
                 })
-        })
+            }).then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(`Что-то пошло не так: ${res.status}`);
+            })
     }
 
     //Удаление статьи

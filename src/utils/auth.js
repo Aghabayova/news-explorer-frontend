@@ -1,8 +1,8 @@
-export const BASE_URL = 'https://api.my-practicum.ru';
+import apiData from '../utils/ApiData';
 
 
-export function authorise(email, password) {
-  return fetch(`${BASE_URL}/signin`, {
+export const authorise = (email, password) => {
+  return fetch(`${apiData.baseUrl}/signin`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -11,25 +11,32 @@ export function authorise(email, password) {
     credentials: 'include',
     body: JSON.stringify({ email, password })
   })
-  .then((res => res.json()))
-    .then(res => {
-      if (res.data) {
-        return res;
-      } else if (res.status === 400) {
-        throw new Error('не передано одно из полей');
-      } else if (res.message) {
-        return res;
+    .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        }
+        if (res.status === 400) {
+          throw new Error('не передано одно из полей');
+        }
+        if (res.status === 401) {
+          throw new Error('пользователь с email не найден');
+        }
+    })
+    .then((data) => {
+      if (data.token) {
+        localStorage.setItem('jwt', data.token);
+        return data
+      }
+      else{
+        return data
       }
     })
-    .catch(e => {
-      return console.log(e)
-    })
+    .catch((err) => console.log(err));
 };
 
 
-
 export const register = (email, password, name) => {
-  return fetch(`${BASE_URL}/signup`, {
+  return fetch(`${apiData.baseUrl}/signup`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -48,17 +55,20 @@ export const register = (email, password, name) => {
     });
 }
 
-export function getContent(){
-  return fetch(`${BASE_URL}/users/me`, {
+export const getContent = (token) => {
+  return fetch(`${apiData.baseUrl}/users/me`, {
     method: 'GET',
-    credentilas: 'include',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    }
   })
-    .then(
-      res => res.json()
-     
-    )
-    .then(res => res)
-    .catch(error => {
-      console.log('not authorised');
-    })
-}
+  .then((response) => {
+    return response.json();
+  })
+  .then((data) => {
+    return data;
+  })
+  .catch((err) => console.log(err));
+};

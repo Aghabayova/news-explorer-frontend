@@ -6,9 +6,6 @@ import About from '../About/About';
 import './Main.css';
 
 function Main(props) {
-    function isSaved(item) {
-        return item.save === false;
-    }
 
     let newsArray = props.currentResult;
     
@@ -22,7 +19,7 @@ function Main(props) {
                     <NotFoundNews />
                     :
                     <div className="main__cards">
-                        <NewsCardList newsArray={newsArray} />
+                        <NewsCardList newsArray={newsArray} saveArticle={props.saveArticle} />
                     </div>
                 }
                 </>

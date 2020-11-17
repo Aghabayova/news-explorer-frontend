@@ -11,6 +11,7 @@ function NewsCard(props) {
 
     const handleToggle = () => {
         setIsSaved(!isSaved);
+        props.saveArticle(props.itemData);
     }
 
     const { pathname } = useLocation();
@@ -34,16 +35,13 @@ function NewsCard(props) {
     function removeInfoSpan() {
         setInfoSpan(false);
     }
-    /*
-    const now = new Date();
-    const dateString = now.toLocaleDateString("ru",{
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    })
-    console.log(dateString);
-    */
     
+    
+    const formatDate = (date) => {
+        const articleDate = new Date(date);
+        const newDate = `${articleDate.toLocaleString("ru-RU", { month: 'long', day: 'numeric' })}, ${articleDate.getFullYear()}`;
+        return newDate;
+    }
 
     return (
         <div className="newscard" key={props.itemData._id}>
@@ -57,7 +55,7 @@ function NewsCard(props) {
                 onClick={() => handleToggle()}
             ></button>
             {(pathname === '/saved-news') ?
-                <span className="newscard__category" >{props.queryCat}</span>
+                <span className="newscard__category" >{props.itemData.category}</span>
                 :
                 <></>
             }
@@ -65,9 +63,9 @@ function NewsCard(props) {
 
             <div className="newscard__content">
                 <div className="newscard__info">
-                    <p className='newscard__date'>{props.itemData.publishedAt}</p>
+                    <p className='newscard__date'>{formatDate(props.itemData.publishedAt)}</p>
                     <h3 className="newscard__title">{props.itemData.title}</h3>
-                    <p className="newscard__article">{props.itemData.content}</p>
+                    <p className="newscard__article">{props.itemData.description}</p>
                 </div>
                 <a className="newscard__link" target="_blank" rel="noreferrer" href={props.itemData.url}>{props.itemData.source.name}</a>
             </div>

@@ -42,35 +42,16 @@ function App(props) {
   const history = useHistory();
   const escape = require('escape-html');
 
-
-
-  // Проверить токен
   React.useEffect(() => {
-
-
-      const localStData = localStorage.getItem('loggedIn');
-
-      if (localStData === true) {
-        auth.getContent()
-          .then(res => {
-            if (res.data && localStData === true) {
-              console.log(currentUser);
-              setCurrentUser(res.data);
-              setLoggedIn(true);
-            } else if (localStData === true) {
-              //localStorage.removeItem('loggedIn');
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+    const localStData = localStorage.getItem('loggedIn');
+    function tokenCheck() {
+      if (localStorage.getItem('token')) {
+        setLoggedIn(true);
+        setCurrentUser(JSON.parse(localStorage.getItem('loggedIn')));
       }
-      else {
-        console.log('Not Auth');
-      }
-    
-
-  }, [localStData]);
+    }
+    tokenCheck();
+    }, []);
 
 
   function mobileMenuToggle() {
@@ -120,22 +101,57 @@ function App(props) {
   //обработчик входа на страницу
   function handleLogin({ email, password }) {
     auth.authorise(email, escape(password))
-      .then(res => {
-        if (res.data) {
-
-          localStorage.setItem('loggedIn', true);
+    .then((res) => {
+      if(res && res.token) {
+         localStorage.setItem('loggedIn', true);
           setCurrentUser(res.data);
           setLoggedIn(true);
           setIsLoginPopupOpen(false);
+          return res.token;
         }
+      })
+      .then((token) => {
+        if (localStData === true) {
+        auth.getContent(token)
+          .then((data) => {
+            if (data) { 
+              localStorage.setItem('name', JSON.stringify(data.data));
+              setCurrentUser(data.data);
+            }
+          })
+          .catch(err => console.log(err));
+        }
+    })
+      .finally(() => {
+      })
+  
+  }
+  
+  function saveArticle(data){
+    console.log(data);
+    if(loggedIn) {
+      api.createArticle(
+        queryCat, 
+        data.publishedAt,
+        data.title,
+        data.description,
+        data.source.name,
+        data.url,
+        data.urlToImage
+      ).then(res => {
+        console.log(res);
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
       })
+    }
+    else {
+      handleRegisterClick();
+    }
+  
   }
-
   //обработчик закрытия попапов
   function closePopups() {
     setIsLoginPopupOpen(false);
@@ -187,6 +203,9 @@ function App(props) {
         console.log(error);
       });
   }
+
+
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -245,6 +264,8 @@ function App(props) {
               isLoading={isLoading}
               currentResult={currentResult}
               startSearch={startSearch}
+              loggedIn={loggedIn}
+              saveArticle = {saveArticle}
             />
           </Route>
 
