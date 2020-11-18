@@ -1,0 +1,9 @@
+.saved-news{
+   
+}
+.saved-news__empty{
+    color: rgba(26, 27, 34, 0.5);
+    margin-left: 104px;
+    margin-top: 50px;
+    height: 67vh;
+}

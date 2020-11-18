@@ -14,7 +14,7 @@ export default function getNewsApi(params) {
     + `q=${params}&`
     + `to=${todayDate}&`
     + `from=${startDate}&`
-    + `pageSize=9`;
+    + `pageSize=100`;
   return fetch(urlApi,{
       method: 'GET'
     })

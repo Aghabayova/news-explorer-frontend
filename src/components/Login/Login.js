@@ -11,18 +11,30 @@ function Login(props) {
     const passwordRef = React.useRef();
     const [emailValid, setEmailValid] = React.useState(false);
     const [passwordValid, setPasswordValid] = React.useState(false);
+    const [isValid, setIsValid] = React.useState(false);
   
 
     function validate() {
         setEmailError(emailRef.current.validationMessage);
         setPasswordError(passwordRef.current.validationMessage);
 
-        !emailRef.current.validity.valid
-            ? setEmailValid(false)
-            : setEmailValid(true);
-        !passwordRef.current.validity.valid
-            ? setPasswordValid(false)
-            : setPasswordValid(true);
+        if(!emailRef.current.validity.valid) {
+            setEmailValid(false);
+            setIsValid(false);
+        }
+        else {
+            setEmailValid(true);
+            setIsValid(true);
+        }
+
+        if(!passwordRef.current.validity.valid) {
+            setPasswordValid(false);
+            setIsValid(false);
+        }
+        else {
+            setPasswordValid(true);
+            setIsValid(true);
+        }
     }
 
  
@@ -30,7 +42,7 @@ function Login(props) {
     function handleChange(e) {
         const { value } = e.target;
         if (e.target.name === 'email') {
-            setEmail(value)
+            setEmail(value);
         }
         if (e.target.name === 'password') {
             setPassword(value);
@@ -45,7 +57,16 @@ function Login(props) {
 
     return (
 
-        <PopupWithForm isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit} onSwitchToRegister={props.switchToRegisterPopup} name="login" heading="Вход" buttonText="Войти" >
+        <PopupWithForm 
+            isOpen={props.isOpen} 
+            onClose={props.onClose} 
+            onSubmit={handleSubmit} 
+            onSwitchToRegister={props.switchToRegisterPopup}
+            isValid={isValid}
+            name="login" 
+            heading="Вход" 
+            buttonText="Войти" 
+        >
             <span className="popup__input-title" lang="en">Email</span>
             <input
                 className="popup__input popup__input_email"
@@ -86,6 +107,9 @@ function Login(props) {
                 >
                     {passwordError}
                 </span>
+                {props.authError &&
+                    <span className="popup__registration-error">Неверные почта или пароль</span>
+                }
         </PopupWithForm >
     )
 }

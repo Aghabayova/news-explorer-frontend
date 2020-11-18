@@ -26,72 +26,70 @@ function App(props) {
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
   const [isMobile, setisMobile] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [localStData, setLocalStData] = React.useState(false);
   const [queryCat, setQueryCat] = React.useState('');
   const [startSearch, setstartSearch] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
-  const [savedArticles, setSavedArticles] = React.useState([]);
-  const [currentResult, setCurrentResult] = React.useState({});
-  
-  //const [articles, setArticles] = React.useState([]);
-  //const [currentUser, setCurrentUser] = React.useState({ name: '', _id: '' });
-  //const [email, setEmail] = React.useState('');
+  const [savedArticle, setSavedArticle] = React.useState([]);
+  const [sortedCats, setSortedCats] = React.useState([]);
+  const [authError, setAuthError] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-
+  const [currentQueryResult, setCurrentQueryResult] = React.useState([]);
+  const [storageQueryResult, sеtStorageQueryResult] = React.useState([]);
+  const [searchError, setSearchQueryError] = React.useState('');
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   const history = useHistory();
   const escape = require('escape-html');
 
-  React.useEffect(() => {
-    const localStData = localStorage.getItem('loggedIn');
-    function tokenCheck() {
-      if (localStorage.getItem('token')) {
-        setLoggedIn(true);
-        setCurrentUser(JSON.parse(localStorage.getItem('loggedIn')));
-      }
-    }
-    tokenCheck();
-    }, []);
-
-
+  // проверка на мобильную версию
   function mobileMenuToggle() {
     isMobile ? setisMobile(false) : setisMobile(true);
   }
 
+  // обработчик кнопки регистрации
   function handleRegisterClick() {
     setIsLoginPopupOpen(false);
     setIsRegisterPopupOpen(true);
   }
 
+  // переключение логина на регистрацию
   function handleSwitchToLogin() {
     setIsRegisterPopupOpen(false);
     setIsLoginPopupOpen(true);
   }
 
+  // обработчик кнопки входа
   function handleLoginClick() {
     setIsLoginPopupOpen(true);
   }
+
+  // обработчик успешной регистрации
   function handleInfoToolPopup() {
     setIsRegisterPopupOpen(false);
     setIsInfoToolTipOpen(true);
   }
+
+  // обработчик перехода на логин
   function switchInfoToolToLogin() {
     setIsInfoToolTipOpen(false);
     setIsLoginPopupOpen(true);
   }
+
   // Регистрация
   function handleRegister({ email, password, name }) {
     //   setIsLoading(true);
     return auth.register(email, escape(password), name)
       .then(res => {
-        if (res) {
+        if (res.data) {
           handleInfoToolPopup();
-        } else {
-          // handleRegisterSuccess(false);
         }
+      })
+      .catch((err) => {
+        setAuthError(true);
       });
   }
 
+  // логаут
   function handleLogOut() {
     localStorage.removeItem('loggedIn');
     setLoggedIn(false);
@@ -101,69 +99,98 @@ function App(props) {
   //обработчик входа на страницу
   function handleLogin({ email, password }) {
     auth.authorise(email, escape(password))
-    .then((res) => {
-      if(res && res.token) {
-         localStorage.setItem('loggedIn', true);
+      .then(res => {
+        if (res.data) {
+          localStorage.setItem('loggedIn', true);
           setCurrentUser(res.data);
           setLoggedIn(true);
           setIsLoginPopupOpen(false);
-          return res.token;
         }
-      })
-      .then((token) => {
-        if (localStData === true) {
-        auth.getContent(token)
-          .then((data) => {
-            if (data) { 
-              localStorage.setItem('name', JSON.stringify(data.data));
-              setCurrentUser(data.data);
-            }
-          })
-          .catch(err => console.log(err));
+        else {
+          setAuthError(true)
         }
-    })
-      .finally(() => {
-      })
-  
-  }
-  
-  function saveArticle(data){
-    console.log(data);
-    if(loggedIn) {
-      api.createArticle(
-        queryCat, 
-        data.publishedAt,
-        data.title,
-        data.description,
-        data.source.name,
-        data.url,
-        data.urlToImage
-      ).then(res => {
-        console.log(res);
       })
       .catch((err) => {
-        console.log(err);
+        setAuthError(true)
       })
       .finally(() => {
       })
+  }
+
+  // обработчик сохранения и удаления новостей на главной странице
+  function saveArticle(data) {
+    if (loggedIn) {
+      if (!data.isSaved) {
+        api.createArticle(queryCat, data.publishedAt, data.title, data.description, data.source.name, data.url, data.urlToImage)
+          .then(res => {
+            if (res.data) {
+
+              const tmpResults = [...currentQueryResult];
+              const index = tmpResults.findIndex(item => {
+                return item.title === data.title &&
+                  item.description === data.description &&
+                  item.publishedAt === data.publishedAt &&
+                  item.source.name === data.source.name &&
+                  item.url === data.url &&
+                  item.urlToImage === data.urlToImage;
+              });
+
+              tmpResults[index].isSaved = true;
+              tmpResults[index]._id = res.data._id;
+              localStorage.setItem('currentQueryResult', JSON.stringify(tmpResults));
+              setCurrentQueryResult(tmpResults);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => { })
+      }
+      else {
+        api.deleteArticle(data._id)
+          .then(res => {
+
+            if (res) {
+              const tmpResults = [...currentQueryResult];
+              const index = tmpResults.findIndex(item => {
+                return item.title === data.title &&
+                  item.description === data.description &&
+                  item.publishedAt === data.publishedAt &&
+                  item.source.name === data.source.name &&
+                  item.url === data.url &&
+                  item.urlToImage === data.urlToImage;
+              });
+
+              tmpResults[index].isSaved = false;
+              console.log(tmpResults[index]);
+              delete tmpResults[index]._id;
+              localStorage.setItem('currentQueryResult', JSON.stringify(tmpResults));
+              setCurrentQueryResult(tmpResults);
+            }
+          })
+          .catch(error => console.log(error));
+      }
     }
     else {
       handleRegisterClick();
     }
-  
   }
+
   //обработчик закрытия попапов
   function closePopups() {
     setIsLoginPopupOpen(false);
     setIsRegisterPopupOpen(false);
     setIsInfoToolTipOpen(false);
   }
+
+  // обработчик клавиши esc
   function handleEscClose(e) {
     if (e.key === "Escape") {
       closePopups();
     }
   }
 
+  // обработчик по нажатию на оверлей
   function handlerOverlayClick(e) {
     if (e.target.classList.contains("popup")) {
       closePopups();
@@ -180,32 +207,129 @@ function App(props) {
     };
   });
 
-  function onSearch(query) {
-    setIsLoading(true);
-    setstartSearch(true);
-    setQueryCat(query);
 
-    newsApi(query)
-      .then(response => {
-        if (response.status === 'ok') {
-          response.articles = response.articles.map(item => ({
-            ...item,
-            isSaved: false
-          }));
-          if (response.articles.length > 0) {
-            const res = response.articles.slice(0, 9);
-            setCurrentResult(res);
-            setIsLoading(false);
-          }
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  // обработчик ввода в поле поиска
+  function handleSearchChange(evt) {
+    if (!evt.target.value.trim()) {
+      setSearchQueryError(true);
+    } else {
+      setSearchQueryError(false);
+    }
+    setSearchQuery(evt.target.value);
   }
 
+  // обработчик поиска
+  function onSearch(query) {
+    if (query.trim()) {
+      setIsLoading(true);
+      setstartSearch(true);
+      setQueryCat(query);
 
+      newsApi(query)
+        .then(response => {
+          if (response.status === 'ok') {
+            response.articles = response.articles.map(item => ({
+              ...item,
+              isSaved: false
+            }));
+            if (response.articles.length > 0) {
+              localStorage.setItem('currentQueryResult', JSON.stringify(response.articles.slice(0, 3)));
+              localStorage.setItem('searchQuery', searchQuery);
+            } else {
+              localStorage.removeItem('currentQueryResult');
+              localStorage.removeItem('searchQuery');
+            }
+            setCurrentQueryResult(response.articles.slice(0, 3));
+            localStorage.setItem('storageQueryResult', JSON.stringify(response.articles.slice(3)));
+            sеtStorageQueryResult(response.articles.slice(3));
+            setIsLoading(false);
+          } else {
+            setAuthError(true);
+            setIsLoading(false);
+          }
+        })
+        .catch(error => {
+          setAuthError(true);
+          setIsLoading(false);
+        });
+    }
+    else {
+      setSearchQueryError('Нужно ввести ключевое слово');
+    }
+  }
+  // обработчик загрузки доп. статей
+  function handleLoadMore() {
+    localStorage.setItem('currentQueryResult', JSON.stringify([...currentQueryResult, ...storageQueryResult.slice(0, 3)]));
+    setCurrentQueryResult([...currentQueryResult, ...storageQueryResult.slice(0, 3)]);
+    localStorage.setItem('searchQueryResultsHidden', JSON.stringify(storageQueryResult.slice(3)));
+    sеtStorageQueryResult(storageQueryResult.slice(3));
+  }
 
+  // получение сохраненых новостей из бакэнда
+  function getSavedArticles() {
+    api.getArticles()
+      .then(res => {
+
+        if (res.data) {
+          const catMap = res.data.map(data => data = data.keyword)
+            .reduce((articles, current) => {
+              articles[current] = (articles[current] || 0) + 1;
+              return articles;
+            }, {});
+          const sortedCats = Object.keys(catMap).sort((a, b) => catMap[b] - catMap[a]);
+          setSavedArticle(res.data);
+          setSortedCats(sortedCats);
+        } else if (console.log('No Results')) {
+          setSavedArticle([]);
+          setSortedCats([]);
+        }
+      })
+      .catch(error => console.log(error));
+  }
+
+  // обработчик удаления новостей с бэкенда
+  function deleteArticle(data) {
+    api.deleteArticle(data._id)
+      .then(res => {
+        if (res.data) {
+
+          const tmpResults = [...currentQueryResult];
+          const index = tmpResults.findIndex(item => item._id === data._id);
+          if (index >= 0) {
+            tmpResults[index].isSaved = false;
+            delete tmpResults[index]._id;
+            localStorage.setItem('currentQueryResult', JSON.stringify(tmpResults));
+            setCurrentQueryResult(tmpResults);
+          }
+        }
+        getSavedArticles();
+      })
+      .catch(error => console.log(error));
+  }
+
+  React.useEffect(() => {
+    const currentQueryResult = JSON.parse(localStorage.getItem('currentQueryResult'));
+    const storageQueryResult = JSON.parse(localStorage.getItem('storageQueryResult')) || [];
+    const searchQuery = localStorage.getItem('searchQuery') || '';
+    setCurrentQueryResult(currentQueryResult);
+    sеtStorageQueryResult(storageQueryResult);
+    setSearchQuery(searchQuery);
+
+    const loggedIn = localStorage.getItem('loggedIn');
+
+    if (loggedIn === 'true') {
+      auth.getContent()
+        .then(res => {
+          if (res.data && loggedIn === 'true') {
+            setCurrentUser(res.data);
+            setLoggedIn(true);
+          } else if (loggedIn === 'true') {
+            localStorage.removeItem('loggedIn');
+          }
+        })
+        .catch(error => console.log(error));
+    }
+  }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -221,6 +345,11 @@ function App(props) {
               onLogOut={handleLogOut}
             />
             <SearchForm
+              currentQueryResult={currentQueryResult}
+              storageQueryResult={storageQueryResult}
+              searchQuery={searchQuery}
+              searchError={searchError}
+              onChange={handleSearchChange}
               onSearch={onSearch}
             />
           </div>
@@ -236,13 +365,15 @@ function App(props) {
           onRegister={handleRegister}
           isOpen={isRegisterPopupOpen}
           switchToLoginPopup={handleSwitchToLogin}
-          onConfirm={handleInfoToolPopup}
+          authError={authError}
         />
         <Login
           onLogin={handleLogin}
           switchToRegisterPopup={handleRegisterClick}
           onClose={closePopups}
           isOpen={isLoginPopupOpen}
+
+          authError={authError}
         />
         <InfoToolTip
           isOpen={isInfoToolTipOpen}
@@ -253,24 +384,27 @@ function App(props) {
           <ProtectedRoute
             path="/saved-news"
             loggedIn={loggedIn}
-            localStData = {localStData}
             component={SavedNews}
-            savedArticles={savedArticles}
-            currentResult={currentResult}
-            queryCat={queryCat}
+            savedArticle={savedArticle}
+            getArticles={getSavedArticles}
+            currentResult={currentQueryResult}
+            deleteArticle={deleteArticle}
+            queryCat={searchQuery}
+            sortedCats={sortedCats}
           />
           <Route exact path="/">
             <Main
               isLoading={isLoading}
-              currentResult={currentResult}
+              currentResult={currentQueryResult}
               startSearch={startSearch}
               loggedIn={loggedIn}
-              saveArticle = {saveArticle}
+              saveArticle={saveArticle}
+              storageQueryResult={storageQueryResult}
+              handleLoadMore={handleLoadMore}
+              authError={authError}
             />
           </Route>
-
         </Switch>
-
         <Footer />
       </div>
     </CurrentUserContext.Provider>

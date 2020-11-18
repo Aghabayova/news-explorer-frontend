@@ -2,7 +2,7 @@
   "name": "news-explorer",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://aghabayova.github.io/news-explorer-frontend/",
+  "homepage": "http://www.my-practicum.ru/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
@@ -20,7 +20,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "npm run build && scp -r ./build/* samira@84.201.156.204:/home/samira/news-explorer-frontend" 
   },
   "eslintConfig": {
     "extends": [

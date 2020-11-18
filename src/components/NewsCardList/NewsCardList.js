@@ -12,7 +12,6 @@ function NewsCardList(props) {
     const data = props.newsArray;
 
 
-
     return (
 
         <div className="newscards">
@@ -23,18 +22,20 @@ function NewsCardList(props) {
                         ?
                         <section className="newscards__cards">
                             {data.map((item, i) =>
-                                <NewsCard saveArticle={props.saveArticle} key={i} itemData={item}/>
+                                <NewsCard saveArticle={props.saveArticle} key={i} itemData={item} loggedIn={props.loggedIn} />
                             )}
                         </section>
                         :
                         <div>No Results</div>
                     }
-                    <button className="newscards__more-btn" type="button">Показать еще</button>
+                    {props.storageQueryResult.length > 0 &&
+                        <button className="newscards__more-btn" type="button" onClick={props.handleLoadMore}>Показать еще</button>
+                    }
                 </>
             ) : (
                     <section className="newscards__cards">
                         {data.map((item, i) =>
-                            <NewsCard key={i} itemData={item} queryCat={props.queryCat} />
+                            <NewsCard key={i} itemData={item} queryCat={props.queryCat} deleteArticle={props.deleteArticle} />
                         )}
                     </section>
                 )}

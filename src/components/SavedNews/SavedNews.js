@@ -1,27 +1,28 @@
 import React from 'react';
 import NewsCardList from '../NewsCardList/NewsCardList.js';
 import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader';
-import { searchResult } from '../../utils/constants.js';
+import './SavedNews.css'
 
 
 function SavedNews(props) {
-    function isSaved(item) {
-        return item.save === true;
-    }
+    
+    React.useEffect(() => {
+        props.getArticles();
+    }, []);
 
-    let newsArray = props.currentResult;
+    
     return (
 
         <div className="saved-news">
-            {props.savedArticles.length > 0?
+            {props.savedArticle.length > 0?
             <>
-            <SavedNewsHeader savedArticlecs={props.savedArticlecs} />
+            <SavedNewsHeader savedArticles={props.savedArticle} sortedCats={props.sortedCats} />
             <div className="main__cards">
-                <NewsCardList newsArray={newsArray} queryCat={props.queryCat} />
+                <NewsCardList newsArray={props.savedArticle} queryCat={props.queryCat} deleteArticle={props.deleteArticle} />
             </div>
             </>
             :
-            <p>Пока нет сохранённых статей</p>
+            <p className="saved-news__empty">Пока нет сохранённых статей</p>
             }
         </div>
 

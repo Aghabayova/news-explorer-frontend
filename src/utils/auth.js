@@ -11,27 +11,20 @@ export const authorise = (email, password) => {
     credentials: 'include',
     body: JSON.stringify({ email, password })
   })
-    .then((res) => {
-        if (res.status === 200) {
-          return res.json();
-        }
-        if (res.status === 400) {
-          throw new Error('не передано одно из полей');
-        }
-        if (res.status === 401) {
-          throw new Error('пользователь с email не найден');
-        }
-    })
-    .then((data) => {
-      if (data.token) {
-        localStorage.setItem('jwt', data.token);
-        return data
-      }
-      else{
-        return data
+    .then((res => res.json()))
+    .then(res => {
+      if (res.data) {
+        return res;
+      } 
+      else if (res.statusCode === 400) {
+        return res.validation.body;
+      } else if (res.message) {
+        return res;
       }
     })
-    .catch((err) => console.log(err));
+    .catch(error => {
+      console.log('error');
+    })
 };
 
 
@@ -47,7 +40,6 @@ export const register = (email, password, name) => {
   })
     .then(res => {
       if (res.ok) {
-        console.log(res);
         return res.json();
       } else {
         return Promise.reject(`Что-то пошло не так: ${res.status}`);
@@ -55,20 +47,14 @@ export const register = (email, password, name) => {
     });
 }
 
-export const getContent = (token) => {
+export const getContent = () => {
   return fetch(`${apiData.baseUrl}/users/me`, {
     method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    }
+    credentials: 'include'
   })
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    return data;
-  })
-  .catch((err) => console.log(err));
-};
+    .then(res => res.json())
+    .then(res => res)
+    .catch(error => {
+        console.log(error);
+    })
+}

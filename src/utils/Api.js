@@ -53,68 +53,6 @@ class Api {
                 return Promise.reject(`Что-то пошло не так: ${res.status}`);
             })
     }
-    /*
-        //получить данные пользователя
-        getUserInfo() {
-            return fetch(`${this._url}/users/me`, {
-                headers: this._headers,
-            })
-                .then(res => {
-                    if (res.ok) {
-                        return res.json();
-                    } else {
-                        return Promise.reject(`Что-то пошло не так: ${res.status}`);
-                    }
-                });
-        }
-    
-        //обновить данные юзера
-        editUserInfo(userData) {
-            return fetch(`${this._url}/users/me`, {
-                method: 'PATCH',
-                headers: this._headers,
-                body: JSON.stringify({
-                    name: userData.name,
-                    about: userData.about
-                }),
-            })
-                .then(res => {
-                    if (res.ok) {
-                        return res.json();
-                    } else {
-                        return Promise.reject(`Что-то пошло не так: ${res.status}`);
-                    }
-                });
-        }
-    
-        //Добавление Лайков
-        changeLikeCardStatus(id, status) {
-            return fetch(`${this._url}/articles/saves/${id}`, {
-                method: `${(status) ? `PUT` : `DELETE`}`,
-                headers: this._headers,
-            })
-                .then((res) => {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                    return Promise.reject(`Что-то пошло не так: ${res.status}`);
-                })
-        }
-   
-    //Удаление Лайков
-    deleteLike(card) {
-        return fetch(`${this._url}/articles/saves/${card._id}`, {
-            method: 'DELETE',
-            headers: this._headers,
-        })
-            .then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Что-то пошло не так: ${res.status}`);
-            })
-    }
-     */
 }
 
 //создаем экземпляр класса Api

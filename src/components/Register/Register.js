@@ -15,22 +15,40 @@ function Register(props) {
     const [emailValid, setEmailValid] = React.useState(false);
     const [passwordValid, setPasswordValid] = React.useState(false);
     const [nameValid, setNameValid] = React.useState(false);
-    
+    const [isValid, setIsValid] = React.useState(false);
+
 
     function validate() {
         setEmailError(emailRef.current.validationMessage);
         setPasswordError(passwordRef.current.validationMessage);
         setNameError(nameRef.current.validationMessage);
 
-        !emailRef.current.validity.valid
-            ? setEmailValid(false)
-            : setEmailValid(true);
-        !passwordRef.current.validity.valid
-            ? setPasswordValid(false)
-            : setPasswordValid(true);
-        !nameRef.current.validity.valid 
-        ? setNameValid(false) 
-        : setNameValid(true);
+        if (!emailRef.current.validity.valid) {
+            setEmailValid(false);
+            setIsValid(false);
+        }
+        else {
+            setEmailValid(true);
+            setIsValid(true);
+        }
+
+        if (!passwordRef.current.validity.valid) {
+            setPasswordValid(false);
+            setIsValid(false);
+        }
+        else {
+            setPasswordValid(true);
+            setIsValid(true);
+        }
+        if (!nameRef.current.validity.valid) {
+            setNameValid(false)
+            setIsValid(false);
+        }
+        else {
+            setNameValid(true);
+            setIsValid(true);
+        }
+
     }
 
     function handleChange(e) {
@@ -48,24 +66,25 @@ function Register(props) {
         validate();
 
     }
-   
+
     function handleSubmit(e) {
         e.preventDefault();
-        props.onRegister({ email, password, name })
-
-            .then(() => {
-                props.onConfirm(true);
-
-            })
-            .catch(() => {
-                props.onConfirm(false);
-            });
+        props.onRegister({ email, password, name });
 
     }
 
     return (
 
-        <PopupWithForm isOpen={props.isOpen} name="register" onClose={props.onClose} onSwitchToLogin={props.switchToLoginPopup} onSubmit={handleSubmit} heading="Регистрация" buttonText="Зарегистрироваться" >
+        <PopupWithForm
+            isOpen={props.isOpen}
+            name="register"
+            onClose={props.onClose}
+            onSwitchToLogin={props.switchToLoginPopup}
+            onSubmit={handleSubmit}
+            heading="Регистрация"
+            buttonText="Зарегистрироваться"
+            isValid={isValid}
+        >
             <span className="popup__input-title" lang="en">Email</span>
             <input
                 className="popup__input popup__input_email"
@@ -101,7 +120,7 @@ function Register(props) {
                 minLength="6"
                 ref={passwordRef}
             />
-              <span
+            <span
                 className={`popup__input-error ${!passwordValid && "popup__input-error_active "
                     }`}
                 id="password-input-error-register"
@@ -123,14 +142,16 @@ function Register(props) {
                 maxLength="30"
                 ref={nameRef}
             />
-              <span
+            <span
                 className={`popup__input-error ${!nameValid && "popup__input-error_active "
                     }`}
                 id="password-input-error-register"
             >
                 {nameError}
             </span>
-            <span className="popup__registration-error">Такой пользователь уже есть</span>
+            {props.authError &&
+                <span className="popup__registration-error">Такой пользователь уже есть</span>
+            }
         </PopupWithForm >
     )
 }

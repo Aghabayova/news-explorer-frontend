@@ -5,29 +5,11 @@ import { useLocation } from "react-router-dom";
 
 
 function NewsCard(props) {
-
-    const [isSaved, setIsSaved] = React.useState("");
-    const [infoSpan, setInfoSpan] = React.useState(false);
-
-    const handleToggle = () => {
-        setIsSaved(!isSaved);
-        props.saveArticle(props.itemData);
-    }
-
     const { pathname } = useLocation();
 
+    const [infoSpan, setInfoSpan] = React.useState(false);
     const infoSpanClass = infoSpan ? 'newscard__info-span' : 'newscard__info-span_hidden';
-    let btnStatus = 'newscard__save-btn';
-    let btnStatusActive = 'newscard__save-btn_active';
-
-
-    if (pathname === '/saved-news') {
-        btnStatus = 'newscard__trash-btn';
-        btnStatusActive = 'newscard__trash-btn';
-    }
-    const buttonToggle = isSaved ? btnStatusActive : btnStatus;
-    const textPath = `${pathname === '/saved-news' ? 'Убрать из сохранённых' : 'Войдите, чтобы сохранять статьи'}`;
-
+    const textPath = props.loggedIn ? 'Нажмите чтобы сохранить статью' : 'Войдите, чтобы сохранять статьи';
 
     function showInfoSpan() {
         setInfoSpan(true);
@@ -35,39 +17,64 @@ function NewsCard(props) {
     function removeInfoSpan() {
         setInfoSpan(false);
     }
+
+    function handleSaveBtn() {
+        props.saveArticle(props.itemData);
+    }
+
+    function handleDeleteBtn() {
+        props.deleteArticle(props.itemData);
+    }
+
     
+
     
     const formatDate = (date) => {
         const articleDate = new Date(date);
         const newDate = `${articleDate.toLocaleString("ru-RU", { month: 'long', day: 'numeric' })}, ${articleDate.getFullYear()}`;
         return newDate;
     }
+    
+    
 
     return (
         <div className="newscard" key={props.itemData._id}>
-            <img className="newscard__image" src={props.itemData.urlToImage} alt="новостное изображение" />
-
-            <button
-                className={buttonToggle}
-
+            <a href={pathname === '/' ? props.itemData.url : props.itemData.link} target="_blank" rel="noopener noreferrer" >
+            <img className="newscard__image" 
+                src={pathname === '/' ? props.itemData.urlToImage : props.itemData.image} 
+                alt="новостное изображение" />
+            </a>
+            {(pathname === '/saved-news') ?
+            <>
+            <button 
+                className="newscard__trash-btn" 
+                type="button"  
+                onClick={handleDeleteBtn} 
                 onMouseOver={showInfoSpan}
                 onMouseOut={removeInfoSpan}
-                onClick={() => handleToggle()}
+            />
+            <span className={infoSpanClass} >Удалить из сохранённых</span>
+            <span className="newscard__category" >{props.itemData.keyword}</span>
+            </>
+            :
+            <>
+            <button
+                className={props.itemData.isSaved ? 'newscard__save-btn_active' : 'newscard__save-btn'}
+                onClick={handleSaveBtn}
+                onMouseOver={showInfoSpan}
+                onMouseOut={removeInfoSpan}
             ></button>
-            {(pathname === '/saved-news') ?
-                <span className="newscard__category" >{props.itemData.category}</span>
-                :
-                <></>
-            }
             <span className={infoSpanClass} >{textPath}</span>
+            </>
+            }
 
             <div className="newscard__content">
                 <div className="newscard__info">
-                    <p className='newscard__date'>{formatDate(props.itemData.publishedAt)}</p>
+                    <p className='newscard__date'>{pathname === '/' ? formatDate(props.itemData.publishedAt) : formatDate(props.itemData.date)}</p>
                     <h3 className="newscard__title">{props.itemData.title}</h3>
-                    <p className="newscard__article">{props.itemData.description}</p>
+                    <p className="newscard__article">{pathname === '/' ? props.itemData.description : props.itemData.text}</p>
                 </div>
-                <a className="newscard__link" target="_blank" rel="noreferrer" href={props.itemData.url}>{props.itemData.source.name}</a>
+                <a className="newscard__link" target="_blank" rel="noreferrer" href={pathname === '/' ? props.itemData.url : props.itemData.link}>{pathname === '/' ? props.itemData.source.name : props.itemData.source}</a>
             </div>
         </div>
     );
