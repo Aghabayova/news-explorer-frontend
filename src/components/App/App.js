@@ -1,4 +1,3 @@
-//import logo from './logo.svg';
 import React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import SavedNews from '../SavedNews/SavedNews';
@@ -13,9 +12,11 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './App.css';
 import { useLocation } from "react-router-dom";
+import configData from '../../utils/Config';
 import api from '../../utils/Api';
 import * as auth from '../../utils/auth.js';
 import newsApi from '../../utils/NewsApi';
+
 
 
 function App(props) {
@@ -33,11 +34,12 @@ function App(props) {
   const [sortedCats, setSortedCats] = React.useState([]);
   const [authError, setAuthError] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [resetForm, setResetForm] = React.useState(true);
   const [currentQueryResult, setCurrentQueryResult] = React.useState([]);
   const [storageQueryResult, sеtStorageQueryResult] = React.useState([]);
   const [searchError, setSearchQueryError] = React.useState('');
   const [searchQuery, setSearchQuery] = React.useState('');
-
+  const [disabled, setDisabled] = React.useState(false);
   const history = useHistory();
   const escape = require('escape-html');
 
@@ -46,21 +48,29 @@ function App(props) {
     isMobile ? setisMobile(false) : setisMobile(true);
   }
 
+  // Зброс функций
+  function handleResetForm() {
+    setAuthError(false);
+  }
+
   // обработчик кнопки регистрации
   function handleRegisterClick() {
     setIsLoginPopupOpen(false);
     setIsRegisterPopupOpen(true);
+    handleResetForm();
   }
 
   // переключение логина на регистрацию
   function handleSwitchToLogin() {
     setIsRegisterPopupOpen(false);
     setIsLoginPopupOpen(true);
+    handleResetForm();
   }
 
   // обработчик кнопки входа
   function handleLoginClick() {
     setIsLoginPopupOpen(true);
+    handleResetForm();
   }
 
   // обработчик успешной регистрации
@@ -77,7 +87,7 @@ function App(props) {
 
   // Регистрация
   function handleRegister({ email, password, name }) {
-    //   setIsLoading(true);
+    setDisabled(true);
     return auth.register(email, escape(password), name)
       .then(res => {
         if (res.data) {
@@ -86,7 +96,8 @@ function App(props) {
       })
       .catch((err) => {
         setAuthError(true);
-      });
+      })
+      .finally(() => setDisabled(false));
   }
 
   // логаут
@@ -98,6 +109,7 @@ function App(props) {
 
   //обработчик входа на страницу
   function handleLogin({ email, password }) {
+    setDisabled(true);
     auth.authorise(email, escape(password))
       .then(res => {
         if (res.data) {
@@ -113,15 +125,14 @@ function App(props) {
       .catch((err) => {
         setAuthError(true)
       })
-      .finally(() => {
-      })
+      .finally(() => setDisabled(false));
   }
 
   // обработчик сохранения и удаления новостей на главной странице
   function saveArticle(data) {
     if (loggedIn) {
       if (!data.isSaved) {
-        api.createArticle(queryCat, data.publishedAt, data.title, data.description, data.source.name, data.url, data.urlToImage)
+        api.createArticle(searchQuery, data.publishedAt, data.title, data.description, data.source.name, data.url, data.urlToImage)
           .then(res => {
             if (res.data) {
 
@@ -162,7 +173,6 @@ function App(props) {
               });
 
               tmpResults[index].isSaved = false;
-              console.log(tmpResults[index]);
               delete tmpResults[index]._id;
               localStorage.setItem('currentQueryResult', JSON.stringify(tmpResults));
               setCurrentQueryResult(tmpResults);
@@ -233,15 +243,15 @@ function App(props) {
               isSaved: false
             }));
             if (response.articles.length > 0) {
-              localStorage.setItem('currentQueryResult', JSON.stringify(response.articles.slice(0, 3)));
+              localStorage.setItem('currentQueryResult', JSON.stringify(response.articles.slice(0, configData.newsLimit)));
               localStorage.setItem('searchQuery', searchQuery);
             } else {
               localStorage.removeItem('currentQueryResult');
               localStorage.removeItem('searchQuery');
             }
-            setCurrentQueryResult(response.articles.slice(0, 3));
-            localStorage.setItem('storageQueryResult', JSON.stringify(response.articles.slice(3)));
-            sеtStorageQueryResult(response.articles.slice(3));
+            setCurrentQueryResult(response.articles.slice(0, configData.newsLimit));
+            localStorage.setItem('storageQueryResult', JSON.stringify(response.articles.slice(configData.newsLimit)));
+            sеtStorageQueryResult(response.articles.slice(configData.newsLimit));
             setIsLoading(false);
           } else {
             setAuthError(true);
@@ -259,10 +269,10 @@ function App(props) {
   }
   // обработчик загрузки доп. статей
   function handleLoadMore() {
-    localStorage.setItem('currentQueryResult', JSON.stringify([...currentQueryResult, ...storageQueryResult.slice(0, 3)]));
-    setCurrentQueryResult([...currentQueryResult, ...storageQueryResult.slice(0, 3)]);
-    localStorage.setItem('searchQueryResultsHidden', JSON.stringify(storageQueryResult.slice(3)));
-    sеtStorageQueryResult(storageQueryResult.slice(3));
+    localStorage.setItem('currentQueryResult', JSON.stringify([...currentQueryResult, ...storageQueryResult.slice(0, configData.newsLimit)]));
+    setCurrentQueryResult([...currentQueryResult, ...storageQueryResult.slice(0, configData.newsLimit)]);
+    localStorage.setItem('storageQueryResult', JSON.stringify(storageQueryResult.slice(configData.newsLimit)));
+    sеtStorageQueryResult(storageQueryResult.slice(configData.newsLimit));
   }
 
   // получение сохраненых новостей из бакэнда
@@ -291,10 +301,10 @@ function App(props) {
   function deleteArticle(data) {
     api.deleteArticle(data._id)
       .then(res => {
-        if (res.data) {
-
+        if (res) {
           const tmpResults = [...currentQueryResult];
           const index = tmpResults.findIndex(item => item._id === data._id);
+          console.log(index);
           if (index >= 0) {
             tmpResults[index].isSaved = false;
             delete tmpResults[index]._id;
@@ -307,14 +317,17 @@ function App(props) {
       .catch(error => console.log(error));
   }
 
+
   React.useEffect(() => {
     const currentQueryResult = JSON.parse(localStorage.getItem('currentQueryResult'));
     const storageQueryResult = JSON.parse(localStorage.getItem('storageQueryResult')) || [];
+    
     const searchQuery = localStorage.getItem('searchQuery') || '';
+    
     setCurrentQueryResult(currentQueryResult);
     sеtStorageQueryResult(storageQueryResult);
     setSearchQuery(searchQuery);
-
+    
     const loggedIn = localStorage.getItem('loggedIn');
 
     if (loggedIn === 'true') {
@@ -366,14 +379,17 @@ function App(props) {
           isOpen={isRegisterPopupOpen}
           switchToLoginPopup={handleSwitchToLogin}
           authError={authError}
+          resetForm={resetForm}
+          disabled={disabled}
         />
         <Login
           onLogin={handleLogin}
           switchToRegisterPopup={handleRegisterClick}
           onClose={closePopups}
           isOpen={isLoginPopupOpen}
-
           authError={authError}
+          resetForm={resetForm}
+          disabled={disabled}
         />
         <InfoToolTip
           isOpen={isInfoToolTipOpen}
@@ -384,6 +400,7 @@ function App(props) {
           <ProtectedRoute
             path="/saved-news"
             loggedIn={loggedIn}
+            openLogin={handleLoginClick}
             component={SavedNews}
             savedArticle={savedArticle}
             getArticles={getSavedArticles}
@@ -402,6 +419,7 @@ function App(props) {
               storageQueryResult={storageQueryResult}
               handleLoadMore={handleLoadMore}
               authError={authError}
+              queryCat={searchQuery}
             />
           </Route>
         </Switch>

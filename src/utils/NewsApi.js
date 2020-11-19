@@ -1,4 +1,4 @@
-import apiData from '../utils/ApiData';
+import configData from '../utils/Config';
 
 export default function getNewsApi(params) {
 
@@ -9,8 +9,8 @@ export default function getNewsApi(params) {
   const startDate = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0')
     + '-' + date.getDate().toString().padStart(2, '0');
 
-  const urlApi = apiData.newsApiUrl
-    + `apiKey=${apiData.newsApiKey}&`
+  const urlApi = configData.newsApiUrl
+    + `apiKey=${configData.newsApiKey}&`
     + `q=${params}&`
     + `to=${todayDate}&`
     + `from=${startDate}&`

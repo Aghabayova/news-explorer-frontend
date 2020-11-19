@@ -6,14 +6,9 @@ import { useLocation } from "react-router-dom";
 
 function NewsCardList(props) {
 
-
     const { pathname } = useLocation();
-
     const data = props.newsArray;
-
-
     return (
-
         <div className="newscards">
             {pathname === '/' ? (
                 <>
@@ -22,13 +17,13 @@ function NewsCardList(props) {
                         ?
                         <section className="newscards__cards">
                             {data.map((item, i) =>
-                                <NewsCard saveArticle={props.saveArticle} key={i} itemData={item} loggedIn={props.loggedIn} />
+                                <NewsCard saveArticle={props.saveArticle} queryCat={props.queryCat} key={i} itemData={item} loggedIn={props.loggedIn} />
                             )}
                         </section>
                         :
                         <div>No Results</div>
                     }
-                    {props.storageQueryResult.length > 0 &&
+                    {props.newsArray.length > 0 &&
                         <button className="newscards__more-btn" type="button" onClick={props.handleLoadMore}>Показать еще</button>
                     }
                 </>

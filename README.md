@@ -26,8 +26,9 @@
 * React 
 
 
-[Ссылка на проект](https://www.my-practicum.ru/) 
-[Ссылка на api](https://api.my-practicum.ru/) 
+* [Ссылка на проект](https://www.my-practicum.ru/) 
+
+* [Ссылка на api](https://api.my-practicum.ru/) 
 
 
 1. Для начала, запустите клонирование репозитория:

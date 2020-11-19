@@ -1,4 +1,4 @@
-import apiData from '../utils/ApiData';
+import configData from '../utils/Config';
 
 class Api {
 
@@ -57,7 +57,7 @@ class Api {
 
 //создаем экземпляр класса Api
 const api = new Api({
-    baseUrl: apiData.baseUrl,
+    baseUrl: configData.baseUrl,
     headers: {
         //  authorization: apiData.authorization,
         'Accept': 'application/json',

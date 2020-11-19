@@ -1,8 +1,8 @@
-import apiData from '../utils/ApiData';
+import configData from '../utils/Config';
 
 
 export const authorise = (email, password) => {
-  return fetch(`${apiData.baseUrl}/signin`, {
+  return fetch(`${configData.baseUrl}/signin`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -29,7 +29,7 @@ export const authorise = (email, password) => {
 
 
 export const register = (email, password, name) => {
-  return fetch(`${apiData.baseUrl}/signup`, {
+  return fetch(`${configData.baseUrl}/signup`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -48,7 +48,7 @@ export const register = (email, password, name) => {
 }
 
 export const getContent = () => {
-  return fetch(`${apiData.baseUrl}/users/me`, {
+  return fetch(`${configData.baseUrl}/users/me`, {
     method: 'GET',
     credentials: 'include'
   })

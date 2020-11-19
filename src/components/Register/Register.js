@@ -23,33 +23,16 @@ function Register(props) {
         setPasswordError(passwordRef.current.validationMessage);
         setNameError(nameRef.current.validationMessage);
 
-        if (!emailRef.current.validity.valid) {
-            setEmailValid(false);
-            setIsValid(false);
-        }
-        else {
-            setEmailValid(true);
-            setIsValid(true);
-        }
-
-        if (!passwordRef.current.validity.valid) {
-            setPasswordValid(false);
-            setIsValid(false);
-        }
-        else {
-            setPasswordValid(true);
-            setIsValid(true);
-        }
-        if (!nameRef.current.validity.valid) {
-            setNameValid(false)
-            setIsValid(false);
-        }
-        else {
-            setNameValid(true);
-            setIsValid(true);
-        }
-
+        !emailRef.current.validity.valid? setEmailValid(false) : setEmailValid(true);
+        !passwordRef.current.validity.valid? setPasswordValid(false) : setPasswordValid(true)
+        !nameRef.current.validity.valid? setNameValid(false) : setNameValid(true)
     }
+
+    React.useEffect(() => {
+        emailValid && passwordValid && nameValid
+          ? setIsValid(true)
+          : setIsValid(false);
+      }, [emailValid, passwordValid, nameValid, email, password, name]);
 
     function handleChange(e) {
 
@@ -64,7 +47,6 @@ function Register(props) {
             setName(value);
         }
         validate();
-
     }
 
     function handleSubmit(e) {
@@ -98,6 +80,7 @@ function Register(props) {
                 pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
                 minLength="6"
                 maxLength="60"
+                disabled={props.disabled}
                 ref={emailRef}
             />
             <span
@@ -118,6 +101,7 @@ function Register(props) {
                 required
                 name="password"
                 minLength="6"
+                disabled={props.disabled}
                 ref={passwordRef}
             />
             <span
@@ -140,6 +124,7 @@ function Register(props) {
                 pattern="[A-Za-zА-Яа-яЁё -]*"
                 minLength="2"
                 maxLength="30"
+                disabled={props.disabled}
                 ref={nameRef}
             />
             <span
@@ -149,9 +134,8 @@ function Register(props) {
             >
                 {nameError}
             </span>
-            {props.authError &&
-                <span className="popup__registration-error">Такой пользователь уже есть</span>
-            }
+            
+            {props.authError && <span className="popup__registration-error">Такой пользователь уже есть</span>}
         </PopupWithForm >
     )
 }

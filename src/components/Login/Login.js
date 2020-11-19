@@ -12,32 +12,24 @@ function Login(props) {
     const [emailValid, setEmailValid] = React.useState(false);
     const [passwordValid, setPasswordValid] = React.useState(false);
     const [isValid, setIsValid] = React.useState(false);
-  
+
+    
 
     function validate() {
         setEmailError(emailRef.current.validationMessage);
         setPasswordError(passwordRef.current.validationMessage);
-
-        if(!emailRef.current.validity.valid) {
-            setEmailValid(false);
-            setIsValid(false);
-        }
-        else {
-            setEmailValid(true);
-            setIsValid(true);
-        }
-
-        if(!passwordRef.current.validity.valid) {
-            setPasswordValid(false);
-            setIsValid(false);
-        }
-        else {
-            setPasswordValid(true);
-            setIsValid(true);
-        }
+        !emailRef.current.validity.valid
+        ? setEmailValid(false)
+        : setEmailValid(true);
+        !passwordRef.current.validity.valid
+        ? setPasswordValid(false)
+        : setPasswordValid(true);
     }
 
- 
+    React.useEffect(() => {
+        emailValid && passwordValid ? setIsValid(true) : setIsValid(false);
+    }, [emailValid, passwordValid, email, password]);
+
 
     function handleChange(e) {
         const { value } = e.target;
@@ -78,6 +70,7 @@ function Login(props) {
                 onChange={handleChange}
                 required
                 maxLength="60"
+                disabled={props.disabled}
                 ref={emailRef} />
             <span
                 className={`popup__input-error ${!emailValid && "popup__input-error_active "
@@ -98,6 +91,7 @@ function Login(props) {
                 name="password"
                 minLength="6"
                 maxLength="30"
+                disabled={props.disabled}
                 ref={passwordRef}
                 />
                   <span

@@ -37,7 +37,7 @@ function PopupWithForm(props) {
                 </form>
                 <p className={spanAuth}>
                     или{" "}
-                    <span className="popup__span-auth_accent" onClick={loginPopup ? (props.onSwitchToRegister) : (props.onSwitchToLogin)} >{loginPopup ? 'Зарегистрироваться' : 'Войти'}</span>
+                    <span className="popup__span-auth_accent" onClick={loginPopup ? (props.onSwitchToRegister): (props.onSwitchToLogin)} >{loginPopup ? 'Зарегистрироваться' : 'Войти'}</span>
                 </p>
             </div>
         </section>

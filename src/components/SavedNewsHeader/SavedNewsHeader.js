@@ -19,7 +19,7 @@ function SavedNewsHeader(props) {
         return text;
       }
 
-    function num_word(value, words) {
+    function numWord(value, words) {
         value = Math.abs(value) % 100;
         var num = value % 10;
         if (value > 10 && value < 20) return words[2];
@@ -28,7 +28,7 @@ function SavedNewsHeader(props) {
         return words[2];
     }
 
-    let savedArticlesCount = num_word(props.savedArticles.length, ['сохраненная статья', 'сохраненные статьи', 'сохраненных статей']);
+    let savedArticlesCount = numWord(props.savedArticles.length, ['сохраненная статья', 'сохраненные статьи', 'сохраненных статей']);
 
     
 
