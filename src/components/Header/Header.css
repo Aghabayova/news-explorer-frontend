@@ -30,10 +30,17 @@
 .header__black .navigation__auth:hover {
   border: 1px solid #000;
 }
-/*
+
+.header .navigation__auth-logout {
+  background-image: url(../../images/Navigation/logoutwhite.svg);
+  width: 20px;
+  height: 20px;
+}
+
 .header__black .navigation__auth-logout {
   background-image: url(../../images/Navigation/logoutblack.svg);
-*/
+}
+
 
 
 
@@ -90,9 +97,10 @@
     z-index: 3;
     margin: 0;
   }
-  .header{
-      padding: 16px;
-  
+
+  .header {
+    padding: 16px;
+
   }
 
   .header__burger {
@@ -118,5 +126,5 @@
     left: 0;
     right: 0;
   }
-  
+
 }

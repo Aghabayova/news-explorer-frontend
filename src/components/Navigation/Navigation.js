@@ -1,30 +1,36 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navigation.css';
-import { useLocation } from "react-router-dom";
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 
 function Navigation(props) {
-    const { pathname } = useLocation();
-    const textPath = `${pathname === '/saved-news' ? 'Грета' : 'Авторизоваться'}`;
-    const logOut = `${pathname === '/saved-news' ? 'navigation__auth-logout' : 'navigation__auth-logout_hidden'}`;
+
+    const { name } = React.useContext(CurrentUserContext);
+    const [userName, setUserName] = React.useState('');
+
+    React.useEffect(() => {
+        setUserName(name);
+      }, [name])
     
-    console.log(props.isMobile);
+    const textPath = (props.loggedIn === true) ? userName : 'Авторизоваться';
+    const logOut = (props.loggedIn === true) ? 'navigation__auth-logout' : 'navigation__auth-logout_hidden';
+    
     const navigation = (props.isMobile === true ) ? 'navigation__mobile' : "navigation";
 
     return (
         <nav className={navigation}>
             
             <NavLink exact to='/' className="navigation__link" >Главная</NavLink>
-            <NavLink to='/saved-news' className="navigation__link" >Сохранённые статьи</NavLink>
+            {props.loggedIn? <NavLink to='/saved-news' className="navigation__link" >Сохранённые статьи</NavLink> : <></>}
             <NavLink
                 className="navigation__auth"
-                onClick={props.onLogin}
+                onClick={props.loggedIn? props.onLogOut:  props.onLogin}
                 exact
                 to="/"
             >
                 {textPath}
-                <span className={logOut} />
+                <span className={logOut} onClick={props.onLogout} />
             </NavLink>
         </nav>
     );

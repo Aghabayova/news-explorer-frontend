@@ -6,3 +6,11 @@
     display: flex;
     flex-direction: column;
 }
+
+.main__span-error {
+    color: #000;
+    text-align: center;
+    padding: 50px 104px;
+    display: block;
+    font-size: 18px;
+}
